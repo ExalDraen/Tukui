@@ -58,6 +58,11 @@ E.SlideIn = function(self)
 	self.anim_o:Stop()
 	self:Show()
 	self.anim:Play()
+    -- New line for Skada
+    if IsAddOnLoaded("Skada") and self:GetName() == "ChatRBackground" then
+        Skada:SetActive(false)
+    end
+    -- New line for Skada
 end
 
 E.SlideOut = function(self)
@@ -67,4 +72,9 @@ E.SlideOut = function(self)
 
 	self.anim:Stop()
 	self.anim_o:Play()
+    -- New line for Skada
+  if IsAddOnLoaded("Skada") and self:GetName() == "ChatRBackground" then
+        Skada:SetActive(true)
+    end
+    -- New line for Skada
 end
