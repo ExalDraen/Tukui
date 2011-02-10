@@ -147,8 +147,8 @@ if C["auras"].raidunitbuffwatch == true then
 		},
 		SHAMAN = {
 			{61295, "TOPLEFT", {0.7, 0.3, 0.7}}, -- Riptide 
-			{16236, "BOTTOMLEFT", {0.4, 0.7, 0.2}}, -- Ancestral Fortitude
-			{51945, "BOTTOMRIGHT", {0.7, 0.4, 0.2}}, -- Earthliving
+			{16236, "BOTTOMLEFT", {145/255, 210/255, 100/255}}, -- Ancestral Fortitude
+			{51945, "BOTTOMRIGHT", {0.2, 0.7, 0.2}}, -- Earthliving
 			{974, "TOPRIGHT", {221/255, 117/255, 0}, true}, -- Earth Shield
 		},
 		ALL = {
