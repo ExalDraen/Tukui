@@ -261,3 +261,5 @@ C["debug"] = {--don't recommend turning this on
 	["enabled"] = false,				
 	["events"] = false,
 }
+
+C["media"].normTex2 = C["media"].normTex

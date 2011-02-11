@@ -11,7 +11,7 @@ local europeDisplayFormat_nocolor = string.join("", "%02d", ":|r%02d")
 local ukDisplayFormat_nocolor = string.join("", "", "%d", ":|r%02d", " %s|r")
 local timerLongFormat = "%d:%02d:%02d"
 local timerShortFormat = "%d:%02d"
-local lockoutInfoFormat = "%s |cffaaaaaa(%s%s)"
+local lockoutInfoFormat = "%s |cffaaaaaa(%s%s, %s/%s)"
 local formatBattleGroundInfo = "%s: "
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=1,g=1,b=1 }
 local difficultyInfo = { "N", "N", "H", "H" }
@@ -29,34 +29,63 @@ Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 E.PP(C["datatext"].wowtime, Text)
 
-local APM = { "PM", "AM" }
+local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
 
-local function CalculateTimeValues()
+local function CalculateTimeValues(tt)
+	if tt == nil then tt = false end
 	local Hr, Min, AmPm
-	if C["datatext"].localtime == true then
-		local Hr24 = tonumber(date("%H"))
-		Hr = tonumber(date("%I"))
-		Min = tonumber(date("%M"))
-		if C["datatext"].time24 == true then
-			return Hr24, Min, -1
+	if tt == true then
+		if C["datatext"].localtime == true then
+			Hr, Min = GetGameTime()
+			if C["datatext"].time24 == true then
+				return Hr, Min, -1
+			else
+				if Hr>=12 then
+					if Hr>12 then Hr = Hr - 12 end
+					AmPm = 1
+				else
+					if Hr == 0 then Hr = 12 end
+					AmPm = 2
+				end
+				return Hr, Min, AmPm
+			end			
 		else
-			if Hr24>=12 then AmPm = 1 else AmPm = 2 end
-			return Hr, Min, AmPm
+			local Hr24 = tonumber(date("%H"))
+			Hr = tonumber(date("%I"))
+			Min = tonumber(date("%M"))
+			if C["datatext"].time24 == true then
+				return Hr24, Min, -1
+			else
+				if Hr24>=12 then AmPm = 1 else AmPm = 2 end
+				return Hr, Min, AmPm
+			end
 		end
 	else
-		Hr, Min = GetGameTime()
-		if C["datatext"].time24 == true then
-			return Hr, Min, -1
-		else
-			if Hr>=12 then
-				if Hr>12 then Hr = Hr - 12 end
-				AmPm = 1
+		if C["datatext"].localtime == true then
+			local Hr24 = tonumber(date("%H"))
+			Hr = tonumber(date("%I"))
+			Min = tonumber(date("%M"))
+			if C["datatext"].time24 == true then
+				return Hr24, Min, -1
 			else
-				if Hr == 0 then Hr = 12 end
-				AmPm = 2
+				if Hr24>=12 then AmPm = 1 else AmPm = 2 end
+				return Hr, Min, AmPm
 			end
-			return Hr, Min, AmPm
-		end
+		else
+			Hr, Min = GetGameTime()
+			if C["datatext"].time24 == true then
+				return Hr, Min, -1
+			else
+				if Hr>=12 then
+					if Hr>12 then Hr = Hr - 12 end
+					AmPm = 1
+				else
+					if Hr == 0 then Hr = 12 end
+					AmPm = 2
+				end
+				return Hr, Min, AmPm
+			end
+		end	
 	end
 end
 
@@ -84,6 +113,12 @@ local function Update(self, t)
 	
 	local Hr, Min, AmPm = CalculateTimeValues()
 	
+	if CalendarGetNumPendingInvites() > 0 then
+		E.Flash(TimeDataText, 0.53)
+	else
+		E.StopFlash(TimeDataText)
+	end
+	
 	-- no update quick exit
 	if (Hr == curHr and Min == curMin and AmPm == curAmPm) then
 		int = 2
@@ -100,18 +135,13 @@ local function Update(self, t)
 		Text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
 	end
 	
-	if CalendarGetNumPendingInvites() > 0 then
-		E.Flash(TimeDataText, 0.53)
-	else
-		E.StopFlash(TimeDataText)
-	end
 	self:SetAllPoints(Text)
 	int = 2
 end
 
 Stat:SetScript("OnEnter", function(self)
 	OnLoad = function(self) RequestRaidInfo() end
-	local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(Text)
+	local anchor, panel, xoff, yoff = E.DataTextTooltipAnchor(fader)
 	GameTooltip:SetOwner(panel, anchor, xoff, yoff)
 	GameTooltip:ClearLines()
 
@@ -136,7 +166,7 @@ Stat:SetScript("OnEnter", function(self)
 	end	
 
 	local timeText
-	local Hr, Min, AmPm = CalculateTimeValues()
+	local Hr, Min, AmPm = CalculateTimeValues(true)
 
 	if C["datatext"].localtime == true then
 		timeText = L.datatext_servertime
@@ -151,7 +181,7 @@ Stat:SetScript("OnEnter", function(self)
 	
 	local oneraid, lockoutColor
 	for i = 1, GetNumSavedInstances() do
-		local name, _, reset, difficulty, locked, extended, _, isRaid, maxPlayers = GetSavedInstanceInfo(i)
+		local name, _, reset, difficulty, locked, extended, _, isRaid, maxPlayers, _, numEncounters, encounterProgress  = GetSavedInstanceInfo(i)
 		if isRaid and (locked or extended) then
 			local tr,tg,tb,diff
 			if not oneraid then
@@ -160,7 +190,7 @@ Stat:SetScript("OnEnter", function(self)
 				oneraid = true
 			end
 			if extended then lockoutColor = lockoutColorExtended else lockoutColor = lockoutColorNormal end
-			GameTooltip:AddDoubleLine(format(lockoutInfoFormat, name, maxPlayers, difficultyInfo[difficulty]), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
+			GameTooltip:AddDoubleLine(format(lockoutInfoFormat, name, maxPlayers, difficultyInfo[difficulty],encounterProgress,numEncounters), formatResetTime(reset), 1,1,1, lockoutColor.r,lockoutColor.g,lockoutColor.b)
 		end
 	end
 	GameTooltip:Show()
