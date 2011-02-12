@@ -1094,7 +1094,7 @@ local function Shared(self, unit)
 				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -E.Scale(8))
 			end
  
-			castbar:SetHeight(E.Scale(20))
+			castbar:SetHeight(E.Scale(25))
 			castbar:SetStatusBarTexture(normTex)
 			castbar:SetFrameLevel(6)
  
