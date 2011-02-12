@@ -55,7 +55,7 @@ local function StyleBuffs(buttonName, index, debuff)
 		icon:SetPoint("TOPLEFT", buff, E.Scale(2), E.Scale(-2))
 		icon:SetPoint("BOTTOMRIGHT", buff, E.Scale(-2), E.Scale(2))
 		
-		if ( debuff == true) then
+		if ( debuff == false) then
 			buff:SetHeight(E.Scale(26))
 			buff:SetWidth(E.Scale(26))
 		else
@@ -72,7 +72,7 @@ local function StyleBuffs(buttonName, index, debuff)
 		count:SetFont(C["media"].font, C["general"].fontscale, "OUTLINE")
 		
 		local panel = CreateFrame("Frame", buttonName..index.."Panel", buff)
-		if ( debuff == true) then
+		if ( debuff == false) then
 		panel:CreatePanel("Default", 26, 26, "CENTER", buff, "CENTER", 0, 0)
 		else
 		panel:CreatePanel("Default", 46, 46, "CENTER", buff, "CENTER", 0, 0)		
