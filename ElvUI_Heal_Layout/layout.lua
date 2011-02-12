@@ -1086,7 +1086,8 @@ local function Shared(self, unit)
 		-- cast bar for target
 		if C["castbar"].unitcastbar == true then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
-			castbar:SetWidth(original_width)
+			local targetcbw = original_width + 80
+			castbar:SetWidth(targetcbw)
 			if powerbar_offset ~= 0 then
 				castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -E.Scale(5))
 			else
@@ -1130,7 +1131,7 @@ local function Shared(self, unit)
 				castbar.icon:SetPoint("TOPLEFT", castbar.button, E.Scale(2), E.Scale(-2))
 				castbar.icon:SetPoint("BOTTOMRIGHT", castbar.button, E.Scale(-2), E.Scale(2))
 				castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
-				castbar:SetWidth(original_width - castbar.button:GetWidth() - E.Scale(2))
+				castbar:SetWidth(targetcbw - castbar.button:GetWidth() - E.Scale(2))
 			end
  
 			self.Castbar = castbar
@@ -1465,8 +1466,8 @@ local function Shared(self, unit)
 		
 		if C["castbar"].unitcastbar == true and unit == "focus" then
 			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
-			castbar:SetHeight(E.Scale(20))
-			castbar:SetWidth(E.Scale(240))
+			castbar:SetHeight(E.Scale(25))
+			castbar:SetWidth(E.Scale(290))
 			castbar:SetStatusBarTexture(normTex)
 			castbar:SetFrameLevel(6)
 			castbar:SetPoint("CENTER", UIParent, "CENTER", 0, 250)		
