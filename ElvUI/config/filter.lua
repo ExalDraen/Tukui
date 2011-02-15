@@ -386,6 +386,7 @@ DebuffHealerWhiteList = {
 		--Cho'gall
 		[SpellName(86028)] = true, -- Cho's Blast
 		[SpellName(86029)] = true, -- Gall's Blast
+		[SpellName(81836)] = true, -- Gall's Blast		
 		
 	--Throne of the Four Winds
 		--Conclave of Wind
