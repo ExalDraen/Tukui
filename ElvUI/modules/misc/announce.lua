@@ -8,8 +8,8 @@ announce:SetScript("OnEvent", function(self, _, _, event, _, sourceName, _, _, d
 	if not (event == "SPELL_INTERRUPT" and sourceName == E.myname) then return end
 	
 	if GetNumPartyMembers() > 0 then
-		SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "PARTY", nil, nil)
+		SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", C["others"].announcechannel, nil, nil)
 	elseif GetNumRaidMembers() > 0 then
-		SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", "RAID", nil, nil)
+		SendChatMessage(INTERRUPTED.." "..destName.."'s \124cff71d5ff\124Hspell:"..spellID.."\124h["..spellName.."]\124h\124r!", C["others"].announcechannel, nil, nil)
 	end
 end)
