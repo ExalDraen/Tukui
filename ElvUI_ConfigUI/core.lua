@@ -257,6 +257,7 @@ local function Local(o)
 	if o == "ElvuiConfigUIotherstotembardirection" then o = ElvuiL.option_others_totembardirection end
 	if o == "ElvuiConfigUIothersportals" then o = ElvuiL.option_others_portals end
 	if o == "ElvuiConfigUIothersannounceinterrupt" then o = ElvuiL.option_others_announceinterrupt end
+	if o == "ElvuiConfigUIothersannouncechannel" then o = ElvuiL.option_others_announcechannel end
 	
 	-- reminder
 	if o == "ElvuiConfigUIbuffreminder" then o = ElvuiL.option_reminder end

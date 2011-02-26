@@ -258,6 +258,7 @@ C["others"] = {
 	["enablemap"] = true,                     -- reskin the map to fit Elvui
 	["enablebag"] = true,                     -- enable an all in one bag mod that fit Elvui perfectly
 	["announceinterrupt"] = true,			-- announce in party/raid when you interrupt
+	["announcechannel"] = "SAY", 			-- what channel to announce to
 }
 
 C["debug"] = {--don't recommend turning this on
