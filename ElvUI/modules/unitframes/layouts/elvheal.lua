@@ -676,61 +676,9 @@ local function Shared(self, unit)
 
 		--Cast Bar
 		if C["castbar"].unitcastbar == true then
--- <<<<<<< HEAD
-			-- local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
-			-- local targetcbw = original_width + 80
-			-- castbar:SetWidth(targetcbw)
-			-- if powerbar_offset ~= 0 then
-				-- castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -powerbar_offset + -E.Scale(5))
-			-- else
-				-- castbar:SetPoint("TOPRIGHT", self.Health, "BOTTOMRIGHT", 0, -(original_height * 0.35) + -E.Scale(8))
-			-- end
- 
-			-- castbar:SetHeight(E.Scale(25))
-			-- castbar:SetStatusBarTexture(normTex)
-			-- castbar:SetFrameLevel(6)
- 
-			-- castbar.bg = CreateFrame("Frame", nil, castbar)
-			-- castbar.bg:SetTemplate("Default")
-			-- castbar.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			-- castbar.bg:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
-			-- castbar.bg:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
-			-- castbar.bg:SetFrameLevel(5)
-
- 
-			-- castbar:FontString("time", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			-- castbar.time:SetPoint("RIGHT", castbar, "RIGHT", E.Scale(-4), 0)
-			-- castbar.time:SetTextColor(0.84, 0.75, 0.65)
-			-- castbar.time:SetJustifyH("RIGHT")
-			-- castbar.CustomTimeText = E.CustomCastTimeText
- 
-			-- castbar:FontString("Text", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			-- castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
-			-- castbar.Text:SetTextColor(0.84, 0.75, 0.65)
- 
-			-- castbar.CustomDelayText = E.CustomCastDelayText
-			-- castbar.PostCastStart = E.PostCastStart
-			-- castbar.PostChannelStart = E.PostCastStart
-  
-			-- if C["castbar"].cbicons == true then
-				-- castbar.button = CreateFrame("Frame", nil, castbar)
-				-- castbar.button:SetHeight(castbar:GetHeight()+E.Scale(4))
-				-- castbar.button:SetWidth(castbar:GetHeight()+E.Scale(4))
-				-- castbar.button:SetPoint("RIGHT", castbar, "LEFT", E.Scale(-4), 0)
-				-- castbar.button:SetTemplate("Default")
-				-- castbar.button:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				-- castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
-				-- castbar.icon:SetPoint("TOPLEFT", castbar.button, E.Scale(2), E.Scale(-2))
-				-- castbar.icon:SetPoint("BOTTOMRIGHT", castbar.button, E.Scale(-2), E.Scale(2))
-				-- castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
-				-- castbar:SetWidth(targetcbw - castbar.button:GetWidth() - E.Scale(2))
-			-- end
- 
--- =======
 			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, CASTBAR_HEIGHT, "RIGHT")
 			castbar:Point("TOPLEFT", self, "BOTTOMLEFT", BORDER, -(BORDER*2+BORDER))
 			
--- >>>>>>> 96ec4ad48b44f04200d4bc8c872a76eb85e4ebf9
 			self.Castbar = castbar
 		end
 		
@@ -929,79 +877,6 @@ local function Shared(self, unit)
 			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, 20, "LEFT")
 			castbar:Point("TOP", UIParent, "TOP", 0, -150)
 			
-<<<<<<< HEAD
-			-- update pet name, this should fix "UNKNOWN" pet names on pet unit.
-			self:RegisterEvent("UNIT_PET", E.updateAllElements)
-		end
-		
-		if C["castbar"].unitcastbar == true and unit == "focus" then
-			local castbar = CreateFrame("StatusBar", self:GetName().."_Castbar", self)
-			castbar:SetHeight(E.Scale(25))
-			castbar:SetWidth(E.Scale(290))
-			castbar:SetStatusBarTexture(normTex)
-			castbar:SetFrameLevel(6)
-			castbar:SetPoint("CENTER", UIParent, "CENTER", 0, 250)		
-			
-			castbar.bg = CreateFrame("Frame", nil, castbar)
-			castbar.bg:SetTemplate("Default")
-			castbar.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			castbar.bg:SetPoint("TOPLEFT", E.Scale(-2), E.Scale(2))
-			castbar.bg:SetPoint("BOTTOMRIGHT", E.Scale(2), E.Scale(-2))
-			castbar.bg:SetFrameLevel(5)
-			
-			castbar:FontString("time", font1, C["unitframes"].fontsize, "THINOUTLINE")
-			castbar.time:SetPoint("RIGHT", castbar, "RIGHT", E.Scale(-4), 0)
-			castbar.time:SetTextColor(0.84, 0.75, 0.65)
-			castbar.time:SetJustifyH("RIGHT")
-			castbar.CustomTimeText = E.CustomCastTimeText
-
-			castbar:FontString("Text", font1, C["unitframes"].fontsize)
-			castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
-			castbar.Text:SetTextColor(0.84, 0.75, 0.65)
-			
-			castbar.CustomDelayText = E.CustomCastDelayText
-			castbar.PostCastStart = E.PostCastStart
-			castbar.PostChannelStart = E.PostCastStart
-			
-			castbar.CastbarBackdrop = CreateFrame("Frame", nil, castbar)
-			castbar.CastbarBackdrop:SetPoint("TOPLEFT", castbar, "TOPLEFT", E.Scale(-6), E.Scale(6))
-			castbar.CastbarBackdrop:SetPoint("BOTTOMRIGHT", castbar, "BOTTOMRIGHT", E.Scale(6), E.Scale(-6))
-			castbar.CastbarBackdrop:SetParent(castbar)
-			castbar.CastbarBackdrop:SetFrameStrata("BACKGROUND")
-			castbar.CastbarBackdrop:SetFrameLevel(4)
-			castbar.CastbarBackdrop:SetBackdrop({
-				edgeFile = glowTex, edgeSize = 4,
-				insets = {left = 3, right = 3, top = 3, bottom = 3}
-			})
-			castbar.CastbarBackdrop:SetBackdropColor(0, 0, 0, 0)
-			castbar.CastbarBackdrop:SetBackdropBorderColor(0, 0, 0, 0.7)
-			
-			if C["castbar"].cbicons == true then
-				castbar.button = CreateFrame("Frame", nil, castbar)
-				castbar.button:SetHeight(E.Scale(40))
-				castbar.button:SetWidth(E.Scale(40))
-				castbar.button:SetPoint("CENTER", 0, E.Scale(50))
-				castbar.button:SetTemplate("Default")
-				castbar.button:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-				castbar.icon = castbar.button:CreateTexture(nil, "ARTWORK")
-				castbar.icon:SetPoint("TOPLEFT", castbar.button, E.Scale(2), E.Scale(-2))
-				castbar.icon:SetPoint("BOTTOMRIGHT", castbar.button, E.Scale(-2), E.Scale(2))
-				castbar.icon:SetTexCoord(0.08, 0.92, 0.08, .92)
-				
-				castbar.IconBackdrop = CreateFrame("Frame", nil, self)
-				castbar.IconBackdrop:SetPoint("TOPLEFT", castbar.button, "TOPLEFT", E.Scale(-4), E.Scale(4))
-				castbar.IconBackdrop:SetPoint("BOTTOMRIGHT", castbar.button, "BOTTOMRIGHT", E.Scale(4), E.Scale(-4))
-				castbar.IconBackdrop:SetParent(castbar)
-				castbar.IconBackdrop:SetBackdrop({
-					edgeFile = glowTex, edgeSize = 4,
-					insets = {left = 3, right = 3, top = 3, bottom = 3}
-				})
-				castbar.IconBackdrop:SetBackdropColor(0, 0, 0, 0)
-				castbar.IconBackdrop:SetBackdropBorderColor(0, 0, 0, 0.7)
-			end
-
-=======
->>>>>>> 96ec4ad48b44f04200d4bc8c872a76eb85e4ebf9
 			self.Castbar = castbar
 		end
 	end
@@ -1308,8 +1183,6 @@ local function LoadHealLayout()
 end
 
 E.Layouts["Heal"] = LoadHealLayout
-<<<<<<< HEAD
-=======
 ------------------------------------------------------------------------
 --	Right-Click on unit frames menu.
 ------------------------------------------------------------------------
@@ -1327,4 +1200,3 @@ do
 	UnitPopupMenus["FOCUS"] = { "RAID_TARGET_ICON", "CANCEL" }
 	UnitPopupMenus["BOSS"] = { "RAID_TARGET_ICON", "CANCEL" }
 end
->>>>>>> 96ec4ad48b44f04200d4bc8c872a76eb85e4ebf9
