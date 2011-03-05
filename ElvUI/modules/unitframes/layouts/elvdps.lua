@@ -108,7 +108,7 @@ local function Shared(self, unit)
 				health.bg:SetParent(overlay)
 			else
 				--Reposition Health
-				health:Point("TOPLEFT", portrait_width+BORDER, 0)
+				health:Point("TOPLEFT", portrait_width+BORDER, -BORDER)
 				
 				
 				local portrait = CreateFrame("PlayerModel", nil, self)	
@@ -601,7 +601,7 @@ local function Shared(self, unit)
 				health.bg:SetParent(overlay)
 			else
 				--Reposition Health
-				health:Point("TOPRIGHT", -(portrait_width+BORDER), 0)
+				health:Point("TOPRIGHT", -(portrait_width+BORDER), -BORDER)
 				
 				local portrait = CreateFrame("PlayerModel", nil, self)
 				
@@ -754,7 +754,8 @@ local function Shared(self, unit)
 	if (unit == "targettarget" or unit == "pet" or unit == "pettarget" or unit == "focustarget" or unit == "focus") then
 		local POWERBAR_WIDTH = SMALL_WIDTH - (BORDER*2)
 		local POWERBAR_HEIGHT = 8
-
+		local CASTBAR_WIDTH = C["castbar"].focuswidth*resscale
+		
 		--Health Bar
 		local health = E.ContructHealthBar(self, true, nil)
 		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
@@ -826,7 +827,7 @@ local function Shared(self, unit)
 			end
 		elseif unit == "focus" and C["castbar"].unitcastbar == true	then
 			--Cast Bar
-			local castbar = E.ConstructCastBar(self, PLAYER_WIDTH, 20, "LEFT")
+			local castbar = E.ConstructCastBar(self, CASTBAR_WIDTH, 20, "LEFT")
 			castbar:Point("TOP", UIParent, "TOP", 0, -150)
 			
 			self.Castbar = castbar
@@ -1014,51 +1015,43 @@ local function LoadDPSLayout()
 
 	-- Player
 	local player = oUF:Spawn('player', "ElvDPS_player")
-	if C["unitframes"].charportrait == true and not C["unitframes"].portraitonhealthbar == true and E.lowversion == true then
-		player:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOPLEFT", E.Scale(-22),E.Scale(35))
-	else
-		player:SetPoint("BOTTOMLEFT", ElvuiActionBarBackground, "TOPLEFT", -ElvuiSplitActionBarRightBackground:GetWidth() + E.Scale(-2),E.Scale(35))
-	end
-	player:SetSize(PLAYER_WIDTH, PLAYER_HEIGHT)
+	player:Point("BOTTOMLEFT", ElvuiSplitActionBarLeftBackground, "TOPLEFT", 0, 35)
+	player:Size(PLAYER_WIDTH, PLAYER_HEIGHT)
 
 	-- Target
 	local target = oUF:Spawn('target', "ElvDPS_target")
-	if C["unitframes"].charportrait == true and not C["unitframes"].portraitonhealthbar == true and E.lowversion == true then
-		target:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOPRIGHT", E.Scale(22),E.Scale(35))
-	else
-		target:SetPoint("BOTTOMRIGHT", ElvuiActionBarBackground, "TOPRIGHT", ElvuiSplitActionBarRightBackground:GetWidth() + E.Scale(2),E.Scale(35))
-	end
-	target:SetSize(TARGET_WIDTH, TARGET_HEIGHT)
+	target:Point("BOTTOMRIGHT", ElvuiSplitActionBarRightBackground, "TOPRIGHT", 0, 35)
+	target:Size(TARGET_WIDTH, TARGET_HEIGHT)
 
 	-- Focus
 	local focus = oUF:Spawn('focus', "ElvDPS_focus")
-	focus:SetPoint("BOTTOMLEFT", ElvDPS_target, "TOPRIGHT", E.Scale(-35),E.Scale(120))
-	focus:SetSize(SMALL_WIDTH, SMALL_HEIGHT)
+	focus:Point("BOTTOMLEFT", ElvDPS_target, "TOPRIGHT", -35, 120)
+	focus:Size(SMALL_WIDTH, SMALL_HEIGHT)
 
 	-- Target's Target
 	local tot = oUF:Spawn('targettarget', "ElvDPS_targettarget")
-	tot:SetPoint("BOTTOM", ElvuiActionBarBackground, "TOP", 0,E.Scale(35))
-	tot:SetSize(SMALL_WIDTH, SMALL_HEIGHT)
+	tot:Point("BOTTOM", ElvuiActionBarBackground, "TOP", 0, 35)
+	tot:Size(SMALL_WIDTH, SMALL_HEIGHT)
 
 	-- Player's Pet
 	local pet = oUF:Spawn('pet', "ElvDPS_pet")
-	pet:SetPoint("BOTTOM", ElvDPS_targettarget, "TOP", 0,E.Scale(15))
-	pet:SetSize(SMALL_WIDTH, SMALL_HEIGHT)
+	pet:Point("BOTTOM", ElvDPS_targettarget, "TOP", 0, 15)
+	pet:Size(SMALL_WIDTH, SMALL_HEIGHT)
 	pet:SetParent(player)
 
 	-- Player's Pet's Target
 	if C["unitframes"].pettarget == true then
 		local pettarget = oUF:Spawn('pettarget', "ElvDPS_pettarget")
-		pettarget:SetPoint("BOTTOM", ElvDPS_pet, "TOP", 0,E.Scale(8))
-		pettarget:SetSize(SMALL_WIDTH, SMALL_HEIGHT*0.8)
+		pettarget:Point("BOTTOM", ElvDPS_pet, "TOP", 0, 8)
+		pettarget:Size(SMALL_WIDTH, SMALL_HEIGHT*0.8)
 		pettarget:SetParent(pet)
 	end
 
 	-- Focus's target
 	if C["unitframes"].showfocustarget == true then
 		local focustarget = oUF:Spawn('focustarget', "ElvDPS_focustarget")
-		focustarget:SetPoint("BOTTOM", ElvDPS_focus, "TOP", 0,E.Scale(15))
-		focustarget:SetSize(SMALL_WIDTH, SMALL_HEIGHT)
+		focustarget:Point("BOTTOM", ElvDPS_focus, "TOP", 0, 15)
+		focustarget:Size(SMALL_WIDTH, SMALL_HEIGHT)
 	end
 
 	if C.arena.unitframes then
@@ -1066,11 +1059,11 @@ local function LoadDPSLayout()
 		for i = 1, 5 do
 			arena[i] = oUF:Spawn("arena"..i, "ElvDPSArena"..i)
 			if i == 1 then
-				arena[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 185)
+				arena[i]:Point("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 185)
 			else
-				arena[i]:SetPoint("BOTTOM", arena[i-1], "TOP", 0, 25)
+				arena[i]:Point("BOTTOM", arena[i-1], "TOP", 0, 25)
 			end
-			arena[i]:SetSize(BOSS_WIDTH, BOSS_HEIGHT)
+			arena[i]:Size(BOSS_WIDTH, BOSS_HEIGHT)
 		end
 	end
 
@@ -1079,11 +1072,11 @@ local function LoadDPSLayout()
 		for i = 1, MAX_BOSS_FRAMES do
 			boss[i] = oUF:Spawn("boss"..i, "ElvDPSBoss"..i)
 			if i == 1 then
-				boss[i]:SetPoint("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 185)
+				boss[i]:Point("BOTTOMLEFT", ChatRBackground2, "TOPLEFT", -80, 185)
 			else
-				boss[i]:SetPoint('BOTTOM', boss[i-1], 'TOP', 0, 25)             
+				boss[i]:Point('BOTTOM', boss[i-1], 'TOP', 0, 25)             
 			end
-			boss[i]:SetSize(BOSS_WIDTH, BOSS_HEIGHT)
+			boss[i]:Size(BOSS_WIDTH, BOSS_HEIGHT)
 		end
 	end
 	
