@@ -28,11 +28,12 @@ E.LoadUFFunctions = function(layout)
 				health.bg.multiplier = 0.25
 			else
 				health.bg:SetTexture(unpack(C["unitframes"].healthbackdropcolor))
+				health.bg.SetVertexColor = E.dummy
 			end
 		end
 		
 		if text then
-			health:FontString("value", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
+			health:FontString("value", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 			health.value:SetParent(self)
 		end
 		
@@ -53,8 +54,8 @@ E.LoadUFFunctions = function(layout)
 		
 		health.backdrop = CreateFrame('Frame', nil, health)
 		health.backdrop:SetTemplate("Default")
-		health.backdrop:Point("TOPRIGHT", health, "TOPRIGHT", 2, 2)
-		health.backdrop:Point("BOTTOMLEFT", health, "BOTTOMLEFT", -2, -2)
+		health.backdrop:Point("TOPRIGHT", health, "TOPRIGHT", 2*E.ResScale, 2*E.ResScale)
+		health.backdrop:Point("BOTTOMLEFT", health, "BOTTOMLEFT", -2*E.ResScale, -2*E.ResScale)
 		health.backdrop:SetFrameLevel(health:GetFrameLevel() - 1)		
 		
 		return health
@@ -79,7 +80,7 @@ E.LoadUFFunctions = function(layout)
 		end
 		
 		if text then
-			power:FontString("value", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
+			power:FontString("value", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 			power.value:SetParent(self)
 		end
 		
@@ -89,8 +90,8 @@ E.LoadUFFunctions = function(layout)
 		
 		power.backdrop = CreateFrame('Frame', nil, power)
 		power.backdrop:SetTemplate("Default")
-		power.backdrop:Point("TOPRIGHT", power, "TOPRIGHT", 2, 2)
-		power.backdrop:Point("BOTTOMLEFT", power, "BOTTOMLEFT", -2, -2)
+		power.backdrop:Point("TOPRIGHT", power, "TOPRIGHT", 2*E.ResScale, 2*E.ResScale)
+		power.backdrop:Point("BOTTOMLEFT", power, "BOTTOMLEFT", -2*E.ResScale, -2*E.ResScale)
 		power.backdrop:SetFrameLevel(power:GetFrameLevel() - 1)
 	
 		return power
@@ -100,7 +101,7 @@ E.LoadUFFunctions = function(layout)
 		local castbar = CreateFrame("StatusBar", nil, self)
 		castbar:SetStatusBarTexture(C["media"].normTex)
 		castbar:Height(height)
-		castbar:Width(width - 4)
+		castbar:Width(width - 4*E.ResScale)
 		castbar.CustomDelayText = E.CustomCastDelayText
 		castbar.PostCastStart = E.PostCastStart
 		castbar.PostChannelStart = E.PostCastStart		
@@ -108,17 +109,17 @@ E.LoadUFFunctions = function(layout)
 		castbar.bg = CreateFrame("Frame", nil, castbar)
 		castbar.bg:SetTemplate("Default")
 		castbar.bg:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-		castbar.bg:Point("TOPLEFT", -2, 2)
-		castbar.bg:Point("BOTTOMRIGHT", 2, -2)
+		castbar.bg:Point("TOPLEFT", -2*E.ResScale, 2*E.ResScale)
+		castbar.bg:Point("BOTTOMRIGHT", 2*E.ResScale, -2*E.ResScale)
 		castbar.bg:SetFrameLevel(castbar:GetFrameLevel() - 1)
 		
-		castbar:FontString("Time", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
+		castbar:FontString("Time", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 		castbar.Time:Point("RIGHT", castbar, "RIGHT", -4, 0)
 		castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 		castbar.Time:SetJustifyH("RIGHT")
 		castbar.CustomTimeText = E.CustomCastTimeText
 
-		castbar:FontString("Text", C["media"].uffont, C["unitframes"].fontsize, "THINOUTLINE")
+		castbar:FontString("Text", C["media"].uffont, C["unitframes"].fontsize*E.ResScale, "THINOUTLINE")
 		castbar.Text:SetPoint("LEFT", castbar, "LEFT", 4, 0)
 		castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 
@@ -131,19 +132,19 @@ E.LoadUFFunctions = function(layout)
 
 		if C["castbar"].cbicons == true then
 			local button = CreateFrame("Frame", nil, castbar)
-			button:Height(height + 4)
-			button:Width(height + 4)
+			button:Height(height + 4*E.ResScale)
+			button:Width(height + 4*E.ResScale)
 			button:SetTemplate("Default")
 			button:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
 			if direction == "LEFT" then
-				button:Point("RIGHT", castbar, "LEFT", -4, 0)
+				button:Point("RIGHT", castbar, "LEFT", -4*E.ResScale, 0)
 			else
-				button:Point("LEFT", castbar, "RIGHT", 4, 0)
+				button:Point("LEFT", castbar, "RIGHT", 4*E.ResScale, 0)
 			end
 			
 			castbar.Icon = button:CreateTexture(nil, "ARTWORK")
-			castbar.Icon:Point("TOPLEFT", button, 2, -2)
-			castbar.Icon:Point("BOTTOMRIGHT", button, -2, 2)
+			castbar.Icon:Point("TOPLEFT", button, 2*E.ResScale, -2*E.ResScale)
+			castbar.Icon:Point("BOTTOMRIGHT", button, -2*E.ResScale, 2*E.ResScale)
 			castbar.Icon:SetTexCoord(0.08, 0.92, 0.08, .92)
 			
 			castbar:Width(width - button:GetWidth() - 6)
@@ -927,6 +928,12 @@ E.LoadUFFunctions = function(layout)
 				else
 					tex:SetVertexColor(0.8, 0.8, 0.8)
 				end
+				
+				local border = icon:CreateTexture(nil, "ARTWORK")
+				border:Point("TOPLEFT", -E.mult, E.mult)
+				border:Point("BOTTOMRIGHT", E.mult, -E.mult)
+				border:SetTexture(C["media"].blank)
+				border:SetVertexColor(0, 0, 0)
 
 				local count = icon:CreateFontString(nil, "OVERLAY")
 				count:SetFont(C["media"].uffont, 8, "THINOUTLINE")
