@@ -23,6 +23,36 @@ local FONT = C["media"].uffont
 local NORMTEX = C["media"].normTex
 local POWERTHEME = C["unitframes"].mini_powerbar
 
+
+--[[
+	Constuctor Functions (inside uf_functions.lua)
+	
+	E.ContructHealthBar(arg1, arg2, arg3):
+		arg1 - first argument should always be self
+		arg2 - [true/false] OPTIONAL create a backdrop
+		arg3 - [true/false] OPTIONAL create health value text
+		
+	E.ContructPowerBar(arg1, arg2, arg3):
+		arg1 - first argument should always be self
+		arg2 - [true/false] OPTIONAL create a backdrop 
+		arg3 - [true/false] OPTIONAL create power value text
+
+	E.ConstructCastBar(arg1, arg2, arg3, arg4):
+		arg1 - first argument should always be self
+		arg2 - width of entire bar, cast icon is calculated in already
+		arg3 - height of entire bar
+		arg4 - ["Left", "Right"] side that you want the cast icon to go on, if cast icons are enabled.
+		
+	
+	Note: These functions do not make the element active, you have to do that manually.
+	
+	Example:
+		local health = E.ContructHealthBar(self, true, true)
+		health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+		
+		self.Health = health
+]]
+
 ------------------------------------------------------------------------
 --	Layout
 ------------------------------------------------------------------------
@@ -150,8 +180,8 @@ local function Shared(self, unit)
 			local debuffs = CreateFrame("Frame", nil, self)
 			debuffs.num = C["auras"].playtarbuffperrow
 			debuffs:SetWidth(PLAYER_WIDTH)
-			debuffs.spacing = SPACING
-			debuffs.size = ((PLAYER_WIDTH - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs.spacing = E.Scale(SPACING)
+			debuffs.size = ((C["framesizes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("BOTTOMLEFT", self, "TOPLEFT", 0, SPACING)	
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
@@ -166,8 +196,8 @@ local function Shared(self, unit)
 				local buffs = CreateFrame("Frame", nil, self)
 				buffs.num = C["auras"].playtarbuffperrow
 				buffs:SetWidth(debuffs:GetWidth())
-				buffs.spacing = SPACING
-				buffs.size = (((PLAYER_WIDTH - (buffs.spacing*(buffs.num - 1))) / buffs.num))
+				buffs.spacing = E.Scale(SPACING)
+				buffs.size = (((C["framesizes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
 				buffs:Point("BOTTOM", debuffs, "TOP", 0, SPACING)
 				buffs:SetHeight(debuffs:GetHeight())
 				buffs.initialAnchor = 'BOTTOMLEFT'
@@ -292,19 +322,16 @@ local function Shared(self, unit)
 			local experience = CreateFrame("StatusBar", nil, self)
 			experience:SetStatusBarTexture(NORMTEX)
 			experience:SetStatusBarColor(0, 0.4, 1, .8)
-			experience:SetFrameLevel(power:GetFrameLevel() + 3)
-			experience:SetAllPoints(power)
-			experience:SetAlpha(0)
+			experience:Size(CASTBAR_WIDTH -(BORDER*2), POWERBAR_HEIGHT -(BORDER*2))
+			experience:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
+			experience:SetFrameStrata("LOW")
 			
-			experience:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
-			experience:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
-
 			experience.Rested = CreateFrame('StatusBar', nil, experience)
 			experience.Rested:SetStatusBarTexture(NORMTEX)
 			experience.Rested:SetStatusBarColor(1, 0, 1, 0.2)
 			experience.Rested:SetFrameLevel(experience:GetFrameLevel() - 1)
 			experience.Rested.SetFrameLevel = E.dummy --oUF_Experience thinks its a good idea to set frame level to 1
-			experience.Rested:SetAllPoints(power)
+			experience.Rested:SetAllPoints(experience)
 			
 			local resting = self:CreateTexture(nil, "OVERLAY")
 			resting:Size(22)
@@ -312,14 +339,15 @@ local function Shared(self, unit)
 			resting:SetTexture([=[Interface\CharacterFrame\UI-StateIcon]=])
 			resting:SetTexCoord(0, 0.5, 0, 0.421875)
 			resting:Hide()
+			self:RegisterEvent("PLAYER_UPDATE_RESTING", E.RestingIconUpdate)
 			self.Resting = resting
 			
 			experience.backdrop = CreateFrame("Frame", nil, experience)
 			experience.backdrop:SetTemplate("Default")
 			experience.backdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			experience.backdrop:SetAllPoints(power.backdrop)
-			experience.backdrop:SetFrameLevel(power:GetFrameLevel() + 1)
-			self:RegisterEvent("PLAYER_UPDATE_RESTING", E.RestingIconUpdate)
+			experience.backdrop:Point("TOPLEFT", experience, "TOPLEFT", -2, 2)
+			experience.backdrop:Point("BOTTOMRIGHT", experience, "BOTTOMRIGHT", 2, -2)
+			experience.backdrop:SetFrameLevel(experience:GetFrameLevel() - 1)
 			self.Experience = experience
 		end
 		
@@ -327,19 +355,19 @@ local function Shared(self, unit)
 			local reputation = CreateFrame("StatusBar", nil, self)
 			reputation:SetStatusBarTexture(NORMTEX)
 			reputation:SetStatusBarColor(0, 0.4, 1, .8)
-			reputation:SetFrameLevel(power:GetFrameLevel() + 2)
-			reputation:SetAllPoints(power)
-			reputation:SetAlpha(0)
+			reputation:Size(CASTBAR_WIDTH -(BORDER*2), POWERBAR_HEIGHT -(BORDER*2))
+			reputation:Point("TOPRIGHT", self, "BOTTOMRIGHT", -BORDER, -(BORDER*2+BORDER))
+			reputation:SetFrameStrata("LOW")
+
 			reputation.Tooltip = true
-			
-			reputation:HookScript("OnEnter", function(self) self:SetAlpha(1) end)
-			reputation:HookScript("OnLeave", function(self) self:SetAlpha(0) end)
+
 
 			reputation.backdrop = CreateFrame("Frame", nil, reputation)
 			reputation.backdrop:SetTemplate("Default")
 			reputation.backdrop:SetBackdropBorderColor(unpack(C["media"].altbordercolor))
-			reputation.backdrop:SetAllPoints(power.backdrop)
-			reputation.backdrop:SetFrameLevel(power:GetFrameLevel() + 1)
+			reputation.backdrop:Point("TOPLEFT", reputation, "TOPLEFT", -2, 2)
+			reputation.backdrop:Point("BOTTOMRIGHT", reputation, "BOTTOMRIGHT", 2, -2)
+			reputation.backdrop:SetFrameLevel(reputation:GetFrameLevel() - 1)
 			self.Reputation = reputation
 		end
 
@@ -610,7 +638,7 @@ local function Shared(self, unit)
 		local CLASSBAR_WIDTH = (C["framesizes"].playtarwidth - (2*2))*E.ResScale
 		local POWERBAR_HEIGHT = 10*E.ResScale
 		local CASTBAR_HEIGHT = 20*E.ResScale
-		local CASTBAR_WIDTH = C["castbar"].playerwidth*E.ResScale
+		local CASTBAR_WIDTH = C["castbar"].targetwidth*E.ResScale
 		local PORTRAIT_WIDTH = 45*E.ResScale
 	
 		if C["unitframes"].charportraithealth == true or C["unitframes"].charportrait == false then
@@ -697,8 +725,8 @@ local function Shared(self, unit)
 			local buffs = CreateFrame("Frame", nil, self)
 			buffs.num = C["auras"].playtarbuffperrow
 			buffs:SetWidth(TARGET_WIDTH)
-			buffs.spacing = SPACING
-			buffs.size = (((TARGET_WIDTH - (buffs.spacing*(buffs.num - 1))) / buffs.num))
+			buffs.spacing = E.Scale(SPACING)
+			buffs.size = (((C["framesizes"].playtarwidth - (buffs.spacing*(buffs.num - 1))) / buffs.num))*E.ResScale
 			buffs:Point("BOTTOM", self, "TOP", 0, SPACING)
 			buffs:SetHeight(buffs.size)
 			buffs.initialAnchor = 'BOTTOMLEFT'
@@ -711,8 +739,8 @@ local function Shared(self, unit)
 			local debuffs = CreateFrame("Frame", nil, self)
 			debuffs.num = C["auras"].playtarbuffperrow
 			debuffs:SetWidth(TARGET_WIDTH)
-			debuffs.spacing = SPACING
-			debuffs.size = ((TARGET_WIDTH - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs.spacing = E.Scale(SPACING)
+			debuffs.size = ((C["framesizes"].playtarwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("BOTTOM", buffs, "TOP", 0, SPACING)	
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
@@ -901,8 +929,8 @@ local function Shared(self, unit)
 			local debuffs = CreateFrame("Frame", nil, self)
 			debuffs.num = C["auras"].smallbuffperrow
 			debuffs:SetWidth(SMALL_WIDTH)
-			debuffs.spacing = SPACING
-			debuffs.size = ((SMALL_WIDTH - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)
+			debuffs.spacing = E.Scale(SPACING)
+			debuffs.size = ((C["framesizes"].smallwidth - (debuffs.spacing*(debuffs.num - 1))) / debuffs.num)*E.ResScale
 			debuffs:SetHeight(debuffs.size)
 			debuffs:Point("TOP", self, "BOTTOM", 0, -SPACING)	
 			debuffs.initialAnchor = 'BOTTOMRIGHT'
@@ -1065,7 +1093,7 @@ local function Shared(self, unit)
 		local buffs = CreateFrame("Frame", nil, self)
 		buffs.num = 3
 		buffs:SetWidth(BOSS_WIDTH)
-		buffs.spacing = SPACING
+		buffs.spacing = E.Scale(SPACING)
 		buffs.size = BOSS_HEIGHT
 		buffs:Point("RIGHT", self, "LEFT", -4, 0)
 		buffs:SetHeight(buffs.size)
