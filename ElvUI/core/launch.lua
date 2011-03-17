@@ -1,6 +1,6 @@
 --This file contains the Install process and everything we do after PLAYER_ENTERING_WORLD event.
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --Install UI
 function E.Install()
@@ -219,7 +219,7 @@ ElvuiOnLogon:SetScript("OnEvent", function(self, event)
 		StaticPopup_Show("DISABLE_RAID")
 	end
 		
-	if C["arena"].unitframes == true then
+	if C["unitframes"].arena == true then
 		SetCVar("showArenaEnemyFrames", 0)
 	end
 	

@@ -1,7 +1,7 @@
 --------------------------------------------------------------------
 -- DURABILITY
 --------------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 	
 if not C["datatext"].dur or C["datatext"].dur == 0 then return end
 
@@ -19,7 +19,7 @@ Stat:SetFrameLevel(3)
 local fader = CreateFrame("Frame", "DurabilityDataText", ElvuiInfoLeft)
 
 local Text  = DurabilityDataText:CreateFontString(nil, "OVERLAY")
-Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+Text:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 Text:SetShadowColor(0, 0, 0, 0.4)
 E.PP(C["datatext"].dur, Text)

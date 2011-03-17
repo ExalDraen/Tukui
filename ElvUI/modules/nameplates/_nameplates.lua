@@ -1,4 +1,4 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 --Base code by Dawn (dNameplates)
 if not C["nameplate"].enable == true then return end

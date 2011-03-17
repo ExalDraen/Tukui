@@ -2,7 +2,7 @@
 -- SETUP ELVUI CHATS
 -----------------------------------------------------------------------
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["chat"].enable ~= true then return end
 
@@ -74,7 +74,7 @@ local function SetChatStyle(frame)
 	end
 	
 	_G[chat.."TabText"]:SetTextColor(unpack(C["media"].valuecolor))
-	_G[chat.."TabText"]:SetFont(C.media.font,C["general"].fontscale,"THINOUTLINE")
+	_G[chat.."TabText"]:SetFont(C["media"].font,C["general"].fontscale,"THINOUTLINE")
 	_G[chat.."TabText"]:SetShadowColor(0, 0, 0, 0.4)
 	_G[chat.."TabText"]:SetShadowOffset(E.mult, -E.mult)
 	_G[chat.."TabText"].SetTextColor = E.dummy
@@ -533,7 +533,7 @@ function E.ChatCopyButtons(id)
 		button:CreateShadow("Default")
 		
 		local buttontext = button:CreateFontString(nil,"OVERLAY",nil)
-		buttontext:SetFont(C.media.font,C["general"].fontscale,"THINOUTLINE")
+		buttontext:SetFont(C["media"].font,C["general"].fontscale,"THINOUTLINE")
 		buttontext:SetShadowColor(0, 0, 0, 0.4)
 		buttontext:SetShadowOffset(E.mult, -E.mult)
 		buttontext:SetText("C")

@@ -3,7 +3,7 @@ Author: Affli@RU-Howling Fjord,
 Modified: Elv
 All rights reserved.
 ]]--
-local E, C, L = unpack(select(2, ...))
+local E, C, L, DB = unpack(select(2, ...))
 
 if not C["skin"].dbm == true or not IsAddOnLoaded("DBM-Core") then return end
 

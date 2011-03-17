@@ -1,4 +1,4 @@
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 local _, ns = ...
 local oUF = ElvUF or ns.oUF or oUF
 assert(oUF, "ElvUI was unable to locate oUF.")

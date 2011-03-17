@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 --	ActionBar Functions
 ------------------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 function E.ElvuiPetBarUpdate(self, event)
 	local petActionButton, petActionIcon, petAutoCastableTexture, petAutoCastShine

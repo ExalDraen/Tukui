@@ -3,7 +3,7 @@ Author: Affli@RU-Howling Fjord,
 Modified: Elv
 All rights reserved.
 ]]--
-local E, C, L = unpack(select(2, ...))
+local E, C, L, DB = unpack(select(2, ...))
 
 if not C["skin"].bigwigs == true or not IsAddOnLoaded("BigWigs") then return end
 
@@ -104,7 +104,7 @@ local applystyle = function(bar)
 	bar.candyBarBar:SetAllPoints(bar)
 	bar.candyBarBar.OldSetPoint = bar.candyBarBar.SetPoint
 	bar.candyBarBar.SetPoint=E.dummy
-	bar.candyBarBar:SetStatusBarTexture(C.media.normTex)
+	bar.candyBarBar:SetStatusBarTexture(C["media"].normTex)
 	bar.candyBarBackground:SetTexture(unpack(C.media.backdropcolor))
 	
 	-- setup icon positions and other things

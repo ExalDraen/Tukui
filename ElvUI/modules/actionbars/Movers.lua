@@ -1,5 +1,5 @@
 --Create interactable actionbars
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["actionbar"].enable == true then return end
 
@@ -33,7 +33,7 @@ local function CreateMoverButton(name, text)
 	tinsert(btnnames, tostring(name))
 	
 	local t = b:CreateFontString(nil, "OVERLAY", b)
-	t:SetFont(C.media.font,14,"THINOUTLINE")
+	t:SetFont(C["media"].font,14,"THINOUTLINE")
 	t:SetShadowOffset(E.mult, -E.mult)
 	t:SetShadowColor(0, 0, 0, 0.4)
 	t:SetPoint("CENTER")

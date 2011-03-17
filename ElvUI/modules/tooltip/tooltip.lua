@@ -1,6 +1,6 @@
 -- credits : Aezay (TipTac) and Caellian for some parts of code.
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["tooltip"].enable then return end
 
@@ -177,7 +177,7 @@ healthBar:ClearAllPoints()
 healthBar:SetHeight(E.Scale(5))
 healthBar:SetPoint("TOPLEFT", healthBar:GetParent(), "BOTTOMLEFT", E.Scale(2), E.Scale(-5))
 healthBar:SetPoint("TOPRIGHT", healthBar:GetParent(), "BOTTOMRIGHT", -E.Scale(2), E.Scale(-5))
-healthBar:SetStatusBarTexture(C.media.normTex)
+healthBar:SetStatusBarTexture(C["media"].normTex)
 
 
 local healthBarBG = CreateFrame("Frame", "StatusBarBG", healthBar)

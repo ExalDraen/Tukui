@@ -1,4 +1,4 @@
-local E, C, L = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
 -- Very simple threat bar for ElvUI.
 
 -- cannot work without Info Right DataText Panel.
@@ -15,13 +15,13 @@ local ElvuiThreatBar = CreateFrame("StatusBar", "ElvuiThreatBar", TukuiInfoRight
 ElvuiThreatBar:Point("TOPLEFT", 2, -2)
 ElvuiThreatBar:Point("BOTTOMRIGHT", -2, 2)
 
-ElvuiThreatBar:SetStatusBarTexture(C.media.normTex)
+ElvuiThreatBar:SetStatusBarTexture(C["media"].normTex)
 ElvuiThreatBar:GetStatusBarTexture():SetHorizTile(false)
 ElvuiThreatBar:SetTemplate('Default', true)
 ElvuiThreatBar:SetBackdropBorderColor(0, 0, 0, 0)
 ElvuiThreatBar:SetMinMaxValues(0, 100)
 
-ElvuiThreatBar:FontString(nil, C.media.font, C.general.fontscale, 'THINOUTLINE')
+ElvuiThreatBar:FontString(nil, C["media"].font, C.general.fontscale, 'THINOUTLINE')
 ElvuiThreatBar.text:SetPoint("CENTER")
 ElvuiThreatBar.text:SetShadowOffset(E.mult, -E.mult)
 ElvuiThreatBar.text:SetShadowColor(0, 0, 0, 0.4)

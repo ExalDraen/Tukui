@@ -1,9 +1,9 @@
-local E, C, L = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
 
 local noop = E.dummy
 local floor = math.floor
 local class = E.myclass
-local texture = C.media.blank
+local texture = C["media"].blank
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
 ---------------------------------------------------
@@ -52,8 +52,8 @@ local function SetTemplate(f, t, texture)
 	GetTemplate(t)
 		
 	f:SetBackdrop({
-	  bgFile = C.media.blank, 
-	  edgeFile = C.media.blank, 
+	  bgFile = C["media"].blank, 
+	  edgeFile = C["media"].blank, 
 	  tile = false, tileSize = 0, edgeSize = E.mult, 
 	  insets = { left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 	})
@@ -70,7 +70,7 @@ local function SetTemplate(f, t, texture)
 		local tex = f:CreateTexture(nil, "BORDER")
 		tex:Point("TOPLEFT", f, "TOPLEFT", 2, -2)
 		tex:Point("BOTTOMRIGHT", f, "BOTTOMRIGHT", -2, 2)
-		tex:SetTexture(C.media.normTex2)
+		tex:SetTexture(C["media"].glossTex)
 		tex:SetVertexColor(backdropr, backdropg, backdropb)
 		tex:SetDrawLayer("BORDER", -8)
 		f.tex = tex

@@ -1,4 +1,4 @@
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local ElvuiFonts = CreateFrame("Frame", nil, UIParent)
 
@@ -15,9 +15,9 @@ ElvuiFonts:RegisterEvent("ADDON_LOADED")
 ElvuiFonts:SetScript("OnEvent", function(self, event, addon)
 	if addon ~= "ElvUI" then return end
 	
-	local NORMAL     = C.media.font
-	local COMBAT     = C.media.dmgfont
-	local NUMBER     = C.media.font	
+	local NORMAL     = C["media"].font
+	local COMBAT     = C["media"].dmgfont
+	local NUMBER     = C["media"].font	
 	local _, editBoxFontSize, _, _, _, _, _, _, _, _ = GetChatWindowInfo(1)
 	
 	UIDROPDOWNMENU_DEFAULT_TEXT_HEIGHT = 12

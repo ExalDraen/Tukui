@@ -1,6 +1,6 @@
 local ElvuiWatchFrame = CreateFrame("Frame", "ElvuiWatchFrame", UIParent)
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 local wideFrame = GetCVar("watchFrameWidth")
 
 local WatchFrameHolder = CreateFrame("Frame", "WatchFrameHolder", UIParent)

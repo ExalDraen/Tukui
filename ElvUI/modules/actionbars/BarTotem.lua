@@ -1,7 +1,7 @@
 -- we just use default totem bar for shaman
 -- we parent it to our shapeshift bar.
 -- This is approx the same script as it was in WOTLK Elvui version.
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 if C["actionbar"].enable ~= true then return end

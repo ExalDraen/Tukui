@@ -1,5 +1,5 @@
 -- here we kill all shit stuff on default UI that we don't need!
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 local Kill = CreateFrame("Frame")
 Kill:RegisterEvent("ADDON_LOADED")
@@ -32,7 +32,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			end
 		end
 		
-		--[[if C["auras"].minimapauras == true then
+		--[[if C["others"].minimapauras == true then
 			BuffFrame:Kill()
 			TemporaryEnchantFrame:Kill()
 		end]]
@@ -46,7 +46,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		
 		InterfaceOptionsUnitFramePanelPartyBackground:Kill()
 		
-		if C.arena.unitframes then
+		if C.unitframes.arena then
 			SetCVar("showArenaEnemyFrames", 0)
 			InterfaceOptionsUnitFramePanelArenaEnemyFrames:Kill()
 			InterfaceOptionsUnitFramePanelArenaEnemyCastBar:Kill()

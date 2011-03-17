@@ -1,5 +1,5 @@
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 
 --------------------------------------------------------------------
@@ -13,7 +13,7 @@ if C["datatext"].hps_text and C["datatext"].hps_text > 0 then
 	local actual_heals_total, cmbt_time = 0
  
 	local hText = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-	hText:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+	hText:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
 	hText:SetShadowOffset(E.mult, -E.mult)
 	hText:SetShadowColor(0, 0, 0, 0.4)
 	hText:SetText("HPS: "..E.ValColor.."0.0")

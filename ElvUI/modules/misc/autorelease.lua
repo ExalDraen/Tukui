@@ -2,7 +2,7 @@
 -- Auto-Release when dead in Battleground.
 --------------------------------------------------------------------------
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["others"].pvpautorelease ~= true then return end
 

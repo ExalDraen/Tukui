@@ -1,6 +1,6 @@
 --Raid Utility by Elv22
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["raidframes"].disableblizz ~= true then return end
 CompactRaidFrameManager:Kill() --Get rid of old module
@@ -53,7 +53,7 @@ local function CreateButton(name, parent, template, width, height, point, relati
 	b:SetTemplate("Default")
 	if text then
 		local t = b:CreateFontString(nil,"OVERLAY",b)
-		t:SetFont(C.media.font,12)
+		t:SetFont(C["media"].font,12)
 		t:SetPoint("CENTER")
 		t:SetJustifyH("CENTER")
 		t:SetText(text)

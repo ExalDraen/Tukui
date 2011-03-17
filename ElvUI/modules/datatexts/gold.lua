@@ -1,7 +1,7 @@
 --------------------------------------------------------------------
 -- GOLD
 --------------------------------------------------------------------
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not C["datatext"].gold or C["datatext"].gold == 0 then return end
 
@@ -11,7 +11,7 @@ Stat:SetFrameStrata("MEDIUM")
 Stat:SetFrameLevel(3)
 
 local Text  = ElvuiInfoLeft:CreateFontString(nil, "OVERLAY")
-Text:SetFont(C.media.font, C["datatext"].fontsize, "THINOUTLINE")
+Text:SetFont(C["media"].font, C["datatext"].fontsize, "THINOUTLINE")
 Text:SetShadowOffset(E.mult, -E.mult)
 E.PP(C["datatext"].gold, Text)
 

@@ -1,4 +1,4 @@
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 local oUF = ElvUF or oUF
 assert(oUF, "ElvUI was unable to locate oUF.")
 
@@ -80,7 +80,7 @@ local function Shared(self, unit)
 		self.Range = range
 	end
 	
-	if C["auras"].raidunitbuffwatch == true then
+	if C["raidframes"].raidunitbuffwatch == true then
 		E.createAuraWatch(self,unit)
     end
 	

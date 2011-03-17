@@ -1,4 +1,4 @@
-local E, C, L = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(ElvUI) -- Import Functions/Constants, Config, Locales
 
 if C.unitframes.enable ~= true or C.unitframes.combatfeedback ~= true then return end
 local _, ns = ...

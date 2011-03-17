@@ -1,4 +1,4 @@
-local E, C, L = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import: E - functions, constants, variables; C - config; L - locales
 -- yleaf (yaroot@gmail.com)
 
 if C.unitframes.enable ~= true then return end

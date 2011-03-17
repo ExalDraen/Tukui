@@ -1,5 +1,5 @@
 
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 ConsolidatedBuffs:ClearAllPoints()
 ConsolidatedBuffs:SetPoint("LEFT", Minimap, "LEFT", E.Scale(0), E.Scale(0))
@@ -7,7 +7,7 @@ ConsolidatedBuffs:SetSize(16, 16)
 ConsolidatedBuffsIcon:SetTexture(nil)
 ConsolidatedBuffs.SetPoint = E.dummy
 
-if C["auras"].minimapauras ~= true then BuffFrame:Kill() ConsolidatedBuffs:Kill() return end
+if C["others"].minimapauras ~= true then BuffFrame:Kill() ConsolidatedBuffs:Kill() return end
 
 local mainhand, _, _, offhand = GetWeaponEnchantInfo()
 local rowbuffs = 12

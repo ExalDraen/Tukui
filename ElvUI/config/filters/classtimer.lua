@@ -10,7 +10,7 @@
 
 	Example: CreateSpellEntry( spellID , castByAnyone, color, unitType, castSpellId), 
 ]]--
-local E, C, L = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if C["classtimer"].enable ~= true and C["nameplate"].enable ~= true then return end
 
