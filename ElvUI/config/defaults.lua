@@ -231,14 +231,7 @@ DB["others"] = {
 	["autoacceptinv"] = true,                 -- auto-accept invite from guildmate and friends.
 	["enablemap"] = true,                     -- reskin the map to fit Elvui
 	["enablebag"] = true,                     -- enable an all in one bag mod that fit Elvui perfectly
-<<<<<<< HEAD
-	["announceinterrupt"] = true,			-- announce in party/raid when you interrupt
-	["announcechannel"] = "SAY", 			-- what channel to announce to
-	["showthreat"] = true,                 -- enable the threat bar anchored to info right panel.	
-}
-=======
 	
->>>>>>> 4fc80913c4cd2c14735c4553569be0f5f97032ba
 
 	["lootframe"] = true,                  -- reskin the loot frame to fit Elvui
 	["rolllootframe"] = true,              -- reskin the roll frame to fit Elvui
