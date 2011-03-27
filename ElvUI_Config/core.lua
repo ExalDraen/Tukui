@@ -181,6 +181,12 @@ function ElvuiConfig.GenerateOptionsInternal()
 							["Heal"] = L["Heal"],
 						},
 					},
+					sharpborders = {
+						order = 9,
+						type = "toggle",
+						name = L["Sharp Borders"],
+						desc = L["Enhance the borders on all frames by making a dark outline around the edges. You will probably need to disable this if you do not play in your monitors max resolution."],	
+					},
 				},
 			},
 			media = {
@@ -419,6 +425,11 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Track CC Debuffs"],
 								desc = L["Tracks CC debuffs on nameplates from you or a friendly player"],										
 							},
+							overlap = { --GetBuildInfo() <-- Reminder to remove this for 4.1
+								type = "toggle",
+								order = 6,
+								name = L["Allow Overlap"],						
+							},
 							Colors = {
 								type = "group",
 								order = 6,
@@ -644,6 +655,12 @@ function ElvuiConfig.GenerateOptionsInternal()
 								desc = L["Bar that displays time between melee attacks"],
 								disabled = function() return (not db.unitframes.enable or not (IsAddOnLoaded("ElvUI_RaidDPS") or db.general.layoutoverride == "DPS")) end,	
 							},
+							displayaggro = {
+								type = "toggle",
+								order = 22,
+								name = L["Display Aggro"],
+								desc = L["Enable red glow around the player frame when you have aggro"],
+							},
 						},
 					},
 					UFSizeGroup = {
@@ -834,7 +851,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Width Player Castbar"],
 								desc = L["The size of the castbar"],
 								type = "range",
-								min = 200, max = 450, step = 1,								
+								min = 200, max = math.ceil(ElvuiActionBarBackground:GetWidth()), step = .01,								
 							},
 							casttargetwidth = {
 								type = "range",
@@ -842,7 +859,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Width Target Castbar"],
 								desc = L["The size of the castbar"],
 								type = "range",
-								min = 200, max = 450, step = 1,								
+								min = 200, max = math.ceil(ElvuiActionBarBackground:GetWidth()), step = .01,							
 							},	
 							castfocuswidth = {
 								type = "range",
@@ -850,7 +867,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Width Focus Castbar"],
 								desc = L["The size of the castbar"],
 								type = "range",
-								min = 200, max = 450, step = 1,								
+								min = 200, max = math.ceil(ElvuiActionBarBackground:GetWidth()), step = .01,						
 							},
 							castbarcolor = {
 								type = "color",
@@ -1021,16 +1038,22 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Mouse Glow"],
 								desc = L["Glow the unitframe to the unit's Reaction/Class when mouseover'd"],							
 							},
+							displayaggro = {
+								type = "toggle",
+								order = 17,
+								name = L["Display Aggro"],
+								desc = L["Change the frame's border to red when a unit has aggro"],
+							},							
 							raidunitbuffwatch = {
 								type = "toggle",
-								order = 15,
+								order = 18,
 								name = L["Raid Buff Display"],
 								desc = L["Display special buffs on raidframes"],
 								disabled = function() return not db.raidframes.enable and not db.unitframes.enable end,
 							},
 							buffindicatorsize = {
 								type = "range",
-								order = 17,
+								order = 19,
 								name = L["Raid Buff Display Size"],
 								desc = L["Size of the buff icon on raidframes"],
 								disabled = function() return not db.raidframes.enable and not db.unitframes.enable end,
@@ -1382,8 +1405,14 @@ function ElvuiConfig.GenerateOptionsInternal()
 						desc = L["Display local time instead of server time"],	
 						disabled = function() return db.datatext.wowtime == 0 end,					
 					},
-					DataGroup = {
+					classcolor = {
 						order = 6,
+						type = "toggle",
+						name = L["Class Color"],
+						desc = L["Color the datatext values based on your class"],
+					},
+					DataGroup = {
+						order = 7,
 						type = "group",
 						name = L["Text Positions"],
 						guiInline = true,

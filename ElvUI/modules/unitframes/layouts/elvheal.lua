@@ -294,10 +294,12 @@ local function Shared(self, unit)
 		self:RegisterEvent("PARTY_MEMBERS_CHANGED", E.MLAnchorUpdate)	
 			
 		--Aggro Glow
-		table.insert(self.__elements, E.UpdateThreat)
-		self:RegisterEvent('PLAYER_TARGET_CHANGED', E.UpdateThreat)
-		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.UpdateThreat)
-		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', E.UpdateThreat)
+		if C["unitframes"].displayaggro == true then
+			table.insert(self.__elements, E.UpdateThreat)
+			self:RegisterEvent('PLAYER_TARGET_CHANGED', E.UpdateThreat)
+			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', E.UpdateThreat)
+			self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', E.UpdateThreat)
+		end
 		
 		--Auto Hide
 		if C["unitframes"].combat == true then
@@ -672,6 +674,7 @@ local function Shared(self, unit)
 		--Name
 		self:FontString("Name", FONT, FONTSIZE, "THINOUTLINE")
 		self.Name:SetJustifyH("LEFT")
+		self.Name:SetShadowColor(0, 0, 0, 0)
 		self.Name.frequentUpdates = 0.2
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namelong] [Elvui:diffcolor][level] [shortclassification]')
 		
@@ -832,12 +835,8 @@ local function Shared(self, unit)
 		--[[This is a little differant than everything else because we have to take into account 
 		the combobar is movable with the /moveele command, this should make it work correctly only 
 		after a reloadui.]]
-		combo:HookScript("OnShow", function()
-			if HealComboBar then HealComboBar:SetFrameLevel(HealComboBar:GetFrameLevel() + 1) end
-			
-			if ElementsPos and HealComboBar and HealComboBar["moved"] then
-				if ElementsPos["HealComboBar"]["moved"] == true and E.CreatedMoveEleFrames["HealComboBar"] then return end
-			end
+		combo:HookScript("OnShow", function()			
+			if ElementsPos and HealComboBar and ElementsPos["HealComboBar"]["moved"] and E.CreatedMoveEleFrames["HealComboBar"] then return end
 			combo:ClearAllPoints()
 			combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 			
@@ -925,6 +924,7 @@ local function Shared(self, unit)
 		--Name
 		self:FontString("Name", FONT, FONTSIZE, "THINOUTLINE")
 		self.Name:Point("CENTER", health, "CENTER", 0, 2)
+		self.Name:SetShadowColor(0, 0, 0, 0)
 		self.Name.frequentUpdates = 0.5
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')		
 		
@@ -1089,6 +1089,7 @@ local function Shared(self, unit)
 		--Name
 		self:FontString("Name", FONT, FONTSIZE, "THINOUTLINE")
 		self.Name:Point("LEFT", health, "LEFT", 4, 0)
+		self.Name:SetShadowColor(0, 0, 0, 0)
 		self.Name.frequentUpdates = 0.5
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')
 				
@@ -1156,6 +1157,7 @@ local function Shared(self, unit)
 		self:FontString("Name", FONT, FONTSIZE, "THINOUTLINE")
 		self.Name:Point("CENTER", health, "CENTER", 0, 2)
 		self.Name.frequentUpdates = 0.5
+		self.Name:SetShadowColor(0, 0, 0, 0)
 		self:Tag(self.Name, '[Elvui:getnamecolor][Elvui:namemedium]')			
 	end
 	

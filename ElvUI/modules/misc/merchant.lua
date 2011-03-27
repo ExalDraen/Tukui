@@ -9,7 +9,7 @@ f:SetScript("OnEvent", function()
 				local l = GetContainerItemLink(b, s)
 				if l then
 					local p = select(11, GetItemInfo(l))*select(2, GetContainerItemInfo(b, s))
-					if select(3, GetItemInfo(l))==0 then
+					if select(3, GetItemInfo(l))==0 and p>0 then
 						UseContainerItem(b, s)
 						PickupMerchantItem()
 						c = c+p
@@ -46,9 +46,8 @@ local savedMerchantItemButton_OnModifiedClick = MerchantItemButton_OnModifiedCli
 function MerchantItemButton_OnModifiedClick(self, ...)
 	if ( IsAltKeyDown() ) then
 		local maxStack = select(8, GetItemInfo(GetMerchantItemLink(self:GetID())))
-		local name, texture, price, quantity, numAvailable, isUsable, extendedCost = GetMerchantItemInfo(self:GetID())
 		if ( maxStack and maxStack > 1 ) then
-			BuyMerchantItem(self:GetID(), floor(maxStack / quantity))
+			BuyMerchantItem(self:GetID(), GetMerchantItemMaxStack(self:GetID()))
 		end
 	end
 	savedMerchantItemButton_OnModifiedClick(self, ...)
