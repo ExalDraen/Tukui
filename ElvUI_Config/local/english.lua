@@ -61,7 +61,7 @@ L["Media"] = true
 		L["Backdrop Fade Color"] = true
 			L["Faded backdrop color of some frames"] = true
 		L["Value Color"] = true
-			L["Value color of various text/frame objects"] = true	
+			L["Value color of various text/frame objects"] = true
 	L["Sounds"] = true
 		L["Whisper Sound"] = true
 			L["Sound that is played when recieving a whisper"] = true
@@ -188,14 +188,7 @@ L["Castbar"] = true
 	L["Color of the castbar"] = true
 	L["Interrupt Color"] = true
 	L["Color of the castbar when you can't interrupt the cast"] = true
-	
-L["Power Colors"] = true
-	L["Mana"] = true
-	L["Rage"] = true
-	L["Focus"] = true
-	L["Energy"] = true
-	L["Runic Power"] = true
-		
+
 --Raidframe
 L["Raid Frames"] = true
 	L["Enable Raidframes"] = true
