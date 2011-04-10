@@ -257,6 +257,7 @@ oUF:Factory(function(self)
 		"groupFilter", "1,2,3,4,5",
 		"groupingOrder", "1,2,3,4,5",
 		"groupBy", "GROUP",
+		"sortMethod","NAME",
 		"maxColumns", 5,
 		"unitsPerColumn", 5,
 		"columnSpacing", 3,
