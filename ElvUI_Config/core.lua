@@ -2550,6 +2550,12 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Auto Accept Invite"],
 								desc = L["Automatically accept invite when invited by a friend/guildie"],							
 							},
+							enablebag = {
+								type = "toggle",
+								order = 4,
+								name = L["All-In-One Bag"],
+								desc = L["Enable/Disable the All-In-One Bag, you must disable this if you wish to run another bag addon"],										
+							},						
 						},
 					},
 					LootGroup = {
