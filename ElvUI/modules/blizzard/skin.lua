@@ -11,11 +11,9 @@ if C["skin"].enable ~= true then return end
 	REMINDER TO SELF: NEED TO CHECK THAT THERE ARE NO RECURRING FRAMES!!!!!!!!!!!!!!
 
 	To do:
-	LFDRoleCheckPopup
 	LF Raid Frame (all subs)
 	(PTR) War Games tab of the PVP Frame
 	(PTR) Statusbar on the PVP Frame
-	(PTR) Boss Journal
 ]]
 
 local function SetModifiedBackdrop(self)
@@ -2943,6 +2941,11 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			HelpFrameKnowledgebaseSearchBox:ClearAllPoints()
 			HelpFrameKnowledgebaseSearchBox:Point("TOPLEFT", HelpFrameMainInset, "TOPLEFT", 13, -10)
 			HelpFrameKnowledgebaseNavBarOverlay:Kill()
+			
+			if E.IsPTRVersion() then
+				HelpFrameKnowledgebaseNavBar:StripTextures()
+			end
+			
 			HelpFrame:StripTextures(true)
 			HelpFrame:CreateBackdrop("Transparent")
 			SkinEditBox(HelpFrameKnowledgebaseSearchBox)
@@ -3150,6 +3153,35 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 			OpacityFrame:SetTemplate("Transparent")
 		end
 		
+		
+		--Encounter Journal
+		if E.IsPTRVersion() then
+			do
+				EncounterJournal:StripTextures(true)
+				EncounterJournal:SetTemplate("Transparent")
+				EncounterJournalNavBar:StripTextures(true)
+				EncounterJournalNavBarOverlay:StripTextures(true)
+				
+				EncounterJournalNavBar:CreateBackdrop("Default")
+				EncounterJournalNavBar.backdrop:Point("TOPLEFT", -2, 0)
+				EncounterJournalNavBar.backdrop:SetPoint("BOTTOMRIGHT")
+				SkinButton(EncounterJournalNavBarHomeButton, true)
+				
+				SkinEditBox(EncounterJournalSearchBox)
+				SkinCloseButton(EncounterJournalCloseButton)
+				
+				EncounterJournalInset:StripTextures(true)
+				EncounterJournalInset:CreateBackdrop("Default")
+				EncounterJournalInset.backdrop:Point("TOPLEFT", 0, -2)
+				EncounterJournalInset.backdrop:Point("BOTTOMRIGHT", -2, 0)
+				EncounterJournalInset.backdrop:SetFrameLevel(EncounterJournalInset.backdrop:GetFrameLevel() + 1)
+				
+				EncounterJournalInstanceSelect:SetFrameLevel(EncounterJournalInstanceSelect:GetFrameLevel() + 1)
+				
+				SkinScrollBar(EncounterJournalInstanceSelectScrollFrameScrollBar)
+			end
+		end
+		
 		--WorldMap
 		if C["skin"].worldmap == true then	
 			WorldMapFrame:CreateBackdrop("Transparent")
@@ -3274,6 +3306,13 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 				if event == "PLAYER_LOGIN" then
 					if not GetCVarBool("miniWorldMap") then
 						ToggleFrame(WorldMapFrame)
+						WorldMapFrameSizeDownButton:Click()	
+						WorldMapFrameSizeUpButton:Click()					
+						ToggleFrame(WorldMapFrame)
+					else
+						ToggleFrame(WorldMapFrame)
+						WorldMapFrameSizeUpButton:Click()
+						WorldMapFrameSizeDownButton:Click()
 						ToggleFrame(WorldMapFrame)
 					end
 				end
@@ -4609,6 +4648,18 @@ ElvuiSkin:SetScript("OnEvent", function(self, event, addon)
 					_G[ChatMenus[i]]:HookScript("OnShow", function(self) self:SetTemplate("Default", true) self:SetBackdropColor(unpack(C["media"].backdropfadecolor)) end)
 				end
 			end
+			
+			--LFD Role Picker frame
+			LFDRoleCheckPopup:StripTextures()
+			LFDRoleCheckPopup:SetTemplate("Transparent")
+			SkinButton(LFDRoleCheckPopupAcceptButton)
+			SkinButton(LFDRoleCheckPopupDeclineButton)
+			SkinCheckBox(LFDRoleCheckPopupRoleButtonTank:GetChildren())
+			SkinCheckBox(LFDRoleCheckPopupRoleButtonDPS:GetChildren())
+			SkinCheckBox(LFDRoleCheckPopupRoleButtonHealer:GetChildren())
+			LFDRoleCheckPopupRoleButtonTank:GetChildren():SetFrameLevel(LFDRoleCheckPopupRoleButtonTank:GetChildren():GetFrameLevel() + 1)
+			LFDRoleCheckPopupRoleButtonDPS:GetChildren():SetFrameLevel(LFDRoleCheckPopupRoleButtonDPS:GetChildren():GetFrameLevel() + 1)
+			LFDRoleCheckPopupRoleButtonHealer:GetChildren():SetFrameLevel(LFDRoleCheckPopupRoleButtonHealer:GetChildren():GetFrameLevel() + 1)
 			
 			-- reskin popup buttons
 			for i = 1, 2 do
