@@ -2427,6 +2427,11 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Character Frame"],
 								desc = L["TOGGLESKIN_DESC"],								
 							},
+							lfr = {
+								type = "toggle",
+								name = L["LFR Frame"],
+								desc = L["TOGGLESKIN_DESC"],
+							},
 							misc = {
 								type = "toggle",
 								name = L["Misc Frames"],
