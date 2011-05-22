@@ -352,7 +352,8 @@ L["Data Texts"] = true
 		L["Display Critical Strike Rating"] = true
 	L["Mana Regen"] = true
 		L["Display Mana Regen Rate"] = true
-	
+	L["Call to Arms"] = true
+		L["Display the active roles that will recieve a reward for completing a random dungeon"] = true
 	
 --chat
 L["Chat"] = true
@@ -442,6 +443,8 @@ L["Skins"] = true
 	L["Character Frame"] = true
 	L["LFR Frame"] = true
 	L["Misc Frames"] = true
+	L["Tabard Frame"] = true
+	L["Guild Registrar"] = true
 	
 	L["Blizzard Skins"] = true
 	L["SKIN_DESC"] = "Adjust settings for external addon skins. As well as skinning of default blizzard stuff."
