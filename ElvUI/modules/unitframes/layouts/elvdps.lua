@@ -408,7 +408,11 @@ local function Shared(self, unit)
 			local experience = CreateFrame("StatusBar", nil, self)
 			experience:SetStatusBarTexture(NORMTEX)
 			experience:SetStatusBarColor(0, 0.4, 1, .8)
-			experience:Size((E.minimapsize - 4) + 1 + (((E.minimapsize - 9) / 6)) + 4, 10)
+			if C["others"].raidbuffreminder == true then
+				experience:Size((E.minimapsize - 4) + 1 + (((E.minimapsize - 9) / 6)) + 4, 10)
+			else
+				experience:Size((E.minimapsize - 4), 10)
+			end
 			experience:Point("TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 2, -3)
 			experience:SetFrameLevel(Minimap:GetFrameLevel() + 1)
 			experience:SetFrameStrata(Minimap:GetFrameStrata())
@@ -449,7 +453,11 @@ local function Shared(self, unit)
 			local reputation = CreateFrame("StatusBar", nil, self)
 			reputation:SetStatusBarTexture(NORMTEX)
 			reputation:SetStatusBarColor(0, 1, 0.2, 1)
-			reputation:Size((E.minimapsize - 4) + 1 + (((E.minimapsize - 9) / 6)) + 4, 10)
+			if C["others"].raidbuffreminder == true then
+				reputation:Size((E.minimapsize - 4) + 1 + (((E.minimapsize - 9) / 6)) + 4, 10)
+			else
+				reputation:Size((E.minimapsize - 4), 10)
+			end
 			reputation:Point("TOPLEFT", ElvuiMinimapStatsLeft, "BOTTOMLEFT", 2, -3)
 			reputation:SetFrameLevel(Minimap:GetFrameLevel() + 1)
 			reputation:SetFrameStrata(Minimap:GetFrameStrata())
@@ -1104,7 +1112,7 @@ local function Shared(self, unit)
 			the combobar is movable with the /moveele command, this should make it work correctly only 
 			after a reloadui.]]
 			combo:HookScript("OnShow", function()		
-				if ElementsPos and DPSComboBar and ElementsPos["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
+				if E["elements"] and DPSComboBar and E["elements"]["DPSComboBar"] and E.CreatedMoveEleFrames["DPSComboBar"] then return end
 				combo:ClearAllPoints()
 				combo:Point("BOTTOMLEFT", health.backdrop, "TOPLEFT", BORDER, BORDER+SPACING)
 				
@@ -1115,7 +1123,7 @@ local function Shared(self, unit)
 			end)
 		else
 			combo:HookScript("OnShow", function()
-				if ElementsPos and DPSComboBar and ElementsPos["DPSComboBar"]["moved"] == true and E.CreatedMoveEleFrames["DPSComboBar"] then return end
+				if E["elements"] and DPSComboBar and E["elements"]["DPSComboBar"] and E.CreatedMoveEleFrames["DPSComboBar"] then return end
 				combo:ClearAllPoints()
 				combo:Point("CENTER", health.backdrop, "TOP", -(BORDER*3 + 6), 0)
 

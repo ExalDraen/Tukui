@@ -11,7 +11,7 @@ Minimap:SetSize(E.minimapsize - E.Scale(4), E.minimapsize - E.Scale(4))
 
 function E.PostMinimapMove(frame)
 	local point, _, _, _, _ = frame:GetPoint()
-	if E.Movers[frame:GetName()]["moved"] ~= true then
+	if E.Movers and E.Movers[frame:GetName()] == nil or E.Movers == nil then
 		point, _, _, _, _ = Minimap:GetPoint()
 		frame:ClearAllPoints()
 		if RaidBuffReminder then
