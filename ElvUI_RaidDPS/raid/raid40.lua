@@ -4,7 +4,7 @@ assert(oUF, "ElvUI was unable to locate oUF.")
 
 if not C["raidframes"].enable == true then return end
 
-local RAID_WIDTH = (((ChatLBackground:GetWidth() - (3*4)) / 5))*C["raidframes"].scale
+local RAID_WIDTH = (((ChatLBGDummy:GetWidth() - (3*4)) / 5))*C["raidframes"].scale
 local RAID_HEIGHT = E.Scale(32)*C["raidframes"].scale
 
 local BORDER = 2
@@ -89,6 +89,20 @@ local function Shared(self, unit)
 		E.createAuraWatch(self,unit)
     end
 	
+	--Resurrect Indicator
+	if E.IsPTRVersion() then
+		local Resurrect = CreateFrame('Frame', nil, self)
+		Resurrect:SetFrameLevel(20)
+
+		local ResurrectIcon = Resurrect:CreateTexture(nil, "OVERLAY")
+		ResurrectIcon:Point(health.value:GetPoint())
+		ResurrectIcon:Size(30, 25)
+		ResurrectIcon:SetDrawLayer('OVERLAY', 7)
+
+		self.ResurrectIcon = ResurrectIcon
+	end	
+	
+	
 	if C["raidframes"].mouseglow == true then
 		self:CreateShadow("Default")
 		
@@ -155,7 +169,7 @@ oUF:Factory(function(self)
 		"columnSpacing", 3,
 		"columnAnchorPoint", "TOP"		
 	)		
-	raid:Point("BOTTOMLEFT", ChatLBackground, "TOPLEFT", 0, 10)
+	raid:Point("BOTTOMLEFT", ChatLBGDummy, "TOPLEFT", 0, 10)
 
 	local raidToggle = CreateFrame("Frame")
 	raidToggle:RegisterEvent("PLAYER_ENTERING_WORLD")
