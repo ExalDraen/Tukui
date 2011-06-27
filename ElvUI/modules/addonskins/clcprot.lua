@@ -1,17 +1,17 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 
 if not LibStub then return end
-if not IsAddOnLoaded("CLCRet") or C["skin"].clcret ~= true or E.myclass ~= "PALADIN" then return end
-local clcret = LibStub("AceAddon-3.0"):GetAddon("clcret")
+if not IsAddOnLoaded("CLCProt") or C["skin"].clcprot ~= true or E.myclass ~= "PALADIN" then return end
+local clcprot = LibStub("AceAddon-3.0"):GetAddon("clcprot")
 
 
 
-function clcret:CreateButton(name, size, point, parent, pointParent, offsetx, offsety, bfGroup, isChecked)
+function clcprot:CreateButton(name, size, point, parent, pointParent, offsetx, offsety, bfGroup, isChecked)
 	local db = self.db.profile
-	clcretFrame:SetScale(1)
-	clcretFrame.SetScale = E.dummy
+	clcprotFrame:SetScale(1)
+	clcprotFrame.SetScale = E.dummy
 	
-	name = "clcret" .. name
+	name = "clcprot" .. name
 	local button
 	if isChecked then
 		button = CreateFrame("CheckButton", name , parent)
@@ -54,17 +54,17 @@ function clcret:CreateButton(name, size, point, parent, pointParent, offsetx, of
 	button:SetPoint(point, parent, pointParent, offsetx, offsety)
 	
 	if self.LBF then
-		self.LBF:Group("clcret", bfGroup):AddButton(button)
+		self.LBF:Group("clcprot", bfGroup):AddButton(button)
 	end
 		
 	button:Hide()
 	return button
 end
 
-function clcret:UpdateButtonLayout(button, opt)
+function clcprot:UpdateButtonLayout(button, opt)
 	button:Size(opt.size)
 	button:ClearAllPoints()
-	button:SetPoint(opt.point, clcretFrame, opt.pointParent, opt.x, opt.y)
+	button:SetPoint(opt.point, clcprotFrame, opt.pointParent, opt.x, opt.y)
 	button:SetAlpha(opt.alpha)
 
 	button.stack:ClearAllPoints()
