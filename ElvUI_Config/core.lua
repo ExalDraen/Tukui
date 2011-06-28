@@ -158,8 +158,10 @@ function ElvuiConfig.GenerateOptionsInternal()
 			if not spelltable[E.myclass] then spelltable[E.myclass] = {} end
 			for group, table in pairs(spelltable[E.myclass]) do
 				groupTable[group] = tostring(group)
+				if not table["spells"] then table["spells"] = {} end
 				spellTable = table["spells"]
 			end
+			
 			
 			local s = spellTable
 			spellTable = {}
@@ -176,7 +178,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 				config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)		
 
 				E.ReminderBuffs[E.myclass][curfilter] = db.spellfilter[tab][E.myclass][curfilter]	
-				
+				StaticPopup_Show("CFG_RELOAD")
 			end
 			
 			newtable["SelectGroup"] = {
@@ -187,7 +189,9 @@ function ElvuiConfig.GenerateOptionsInternal()
 				values = groupTable,
 				set = function(info, value)
 					db.spellfilter[ info[#info] ] = value;
-					Update()						
+					local config = LibStub("AceConfigRegistry-3.0"):GetOptionsTable("ElvuiConfig", "dialog", "MyLib-1.2")
+					local curfilter = db.spellfilter.FilterPicker
+					config.args.spellfilter.args.SpellListTable.args = CreateFilterTable(curfilter)							
 				end,
 			}
 			local curfilter = db.spellfilter["SelectGroup"]
@@ -250,16 +254,15 @@ function ElvuiConfig.GenerateOptionsInternal()
 				}
 				
 				newtable["level"] = {
-					type = "input",
+					type = "range",
 					name = L["Level Requirement"],
-					desc = L["Level requirement for the icon to be able to display."],
+					desc = L["Level requirement for the icon to be able to display. 0 for disabled."],
 					order = 5,
-					get = function(info) if db.spellfilter[tab][E.myclass][curfilter]["level"] then return db.spellfilter[tab][E.myclass][curfilter]["level"] else return '' end end,
+					min = 0, max = MAX_PLAYER_LEVEL, step = 1,
+					get = function(info) if db.spellfilter[tab][E.myclass][curfilter]["level"] then return db.spellfilter[tab][E.myclass][curfilter]["level"] else return 0 end end,
 					set = function(info, value) 
-						if not tonumber(value) then
-							print(L["Value must be a number"])
-						elseif db.spellfilter[tab][E.myclass][curfilter]["level"] ~= '' then 
-							db.spellfilter[tab][E.myclass][curfilter]["level"] = tonumber(value)
+						if db.spellfilter[tab][E.myclass][curfilter]["level"] ~= 0 then 
+							db.spellfilter[tab][E.myclass][curfilter]["level"] = value
 							Update()
 						else 
 							db.spellfilter[tab][E.myclass][curfilter]["level"] = nil
@@ -3060,6 +3063,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								if not name_list[E.myclass] then name_list[E.myclass] = {} end
 								name_list[E.myclass][value] = {}
 								UpdateSpellFilter()
+								StaticPopup_Show("CFG_RELOAD")
 							elseif db.spellfilter.FilterPicker == "ChannelTicks" then
 								local name_list = db.spellfilter[db.spellfilter.FilterPicker]
 								name_list[value] = 0
@@ -3117,6 +3121,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 								if not name_list[E.myclass] then name_list[E.myclass] = {} end
 								name_list[E.myclass][value] = nil
 								UpdateSpellFilter()
+								StaticPopup_Show("CFG_RELOAD")
 							elseif ClassTimer[db.spellfilter.FilterPicker] then
 								if not GetSpellInfo(value) then
 									print(L["Not valid spell id"])
