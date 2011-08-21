@@ -38,6 +38,7 @@ DB["general"] = {
 	["sharpborders"] = true,
 	["upperpanel"] = false,
 	["lowerpanel"] = false,
+	["loginmessage"] = true,
 }
 
 DB["skin"] = {
@@ -94,6 +95,7 @@ DB["skin"] = {
 	["kle"] = true,
 	["dxe"] = true,
 	["dbm"] = true,
+	["ace3"] = true,
 	["bigwigs"] = true,
 	["clcret"] = true,
 	["clcprot"] = true,
