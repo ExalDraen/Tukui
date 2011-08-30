@@ -2999,7 +2999,7 @@ function ElvuiConfig.GenerateOptionsInternal()
 							["NONE"] = L["None"],
 							["Recount"] = "Recount",
 							["Omen"] = "Omen",
-							--["Skada"] = "Skada",
+							["Skada"] = "Skada",
 						},						
 					},
 					embedrighttoggle = {
