@@ -11,9 +11,13 @@ local function LoadSkin()
 	E.SkinButton(DressUpFrameResetButton)
 	E.SkinButton(DressUpFrameCancelButton)
 	E.SkinCloseButton(DressUpFrameCloseButton, DressUpFrame.backdrop)
-	E.SkinRotateButton(DressUpModelRotateLeftButton)
-	E.SkinRotateButton(DressUpModelRotateRightButton)
-	DressUpModelRotateRightButton:Point("TOPLEFT", DressUpModelRotateLeftButton, "TOPRIGHT", 2, 0)
+	
+	if not E.IsPTRVersion() then
+		E.SkinRotateButton(DressUpModelRotateLeftButton)
+		E.SkinRotateButton(DressUpModelRotateRightButton)
+		DressUpModelRotateRightButton:Point("TOPLEFT", DressUpModelRotateLeftButton, "TOPRIGHT", 2, 0)
+	end
+	
 	DressUpFrameResetButton:Point("RIGHT", DressUpFrameCancelButton, "LEFT", -2, 0)
 end
 

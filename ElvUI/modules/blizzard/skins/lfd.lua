@@ -9,8 +9,13 @@ local function LoadSkin()
 		"LFDQueueFrameRandom",
 		"LFDQueueFrameRandomScrollFrame",
 		"LFDQueueFrameCapBar",
-		"LFDDungeonReadyDialog",
 	}
+	
+	if E.IsPTRVersion() then
+		tinsert(StripAllTextures, 'LFGDungeonReadyDialog')
+	else
+		tinsert(StripAllTextures, 'LFDDungeonReadyDialog')
+	end
 	
 	local KillTextures = {
 		"LFDQueueFrameBackground",
@@ -19,8 +24,16 @@ local function LoadSkin()
 		"LFDQueueFrameRoleButtonTankBackground",
 		"LFDQueueFrameRoleButtonHealerBackground",
 		"LFDQueueFrameRoleButtonDPSBackground",
-		"LFDDungeonReadyDialogBackground",
 	}
+	
+	if E.IsPTRVersion() then
+		LFGDungeonReadyDialogBackground:Kill()
+		E.SkinButton(LFGDungeonReadyDialogEnterDungeonButton)
+		E.SkinButton(LFGDungeonReadyDialogLeaveQueueButton)
+	else
+		LFDDungeonReadyDialogBackground:Kill()
+	end
+	
 	local buttons = {
 		"LFDQueueFrameFindGroupButton",
 		"LFDQueueFrameCancelButton",
@@ -122,15 +135,28 @@ local function LoadSkin()
 	end
 	
 	LFDQueueFrameCapBar:SetPoint("LEFT", 40, 0)
-	LFDDungeonReadyDialog:SetTemplate("Transparent")
-	LFDDungeonReadyDialog:CreateShadow("Default")			
+	
+	if not E.IsPTRVersion() then
+		LFDDungeonReadyDialog:SetTemplate("Transparent")
+		LFDDungeonReadyDialog:CreateShadow("Default")
+	else
+		LFGDungeonReadyDialog:SetTemplate("Transparent")
+		LFGDungeonReadyDialog:CreateShadow("Default")	
+	end
+	
 	LFDQueueFrameSpecificListScrollFrame:StripTextures()
 	LFDQueueFrameSpecificListScrollFrame:Height(LFDQueueFrameSpecificListScrollFrame:GetHeight() - 8)
 	LFDParentFrame:CreateBackdrop("Transparent")
 	LFDParentFrame.backdrop:Point( "TOPLEFT", LFDParentFrame, "TOPLEFT")
 	LFDParentFrame.backdrop:Point( "BOTTOMRIGHT", LFDParentFrame, "BOTTOMRIGHT")
 	E.SkinCloseButton(LFDParentFrameCloseButton,LFDParentFrame)
-	E.SkinCloseButton(LFDDungeonReadyDialogCloseButton,LFDDungeonReadyDialog)
+	
+	if not E.IsPTRVersion() then
+		E.SkinCloseButton(LFDDungeonReadyDialogCloseButton,LFDDungeonReadyDialog)
+	else
+		E.SkinCloseButton(LFGDungeonReadyDialogCloseButton, LFGDungeonReadyDialog)
+	end
+	
 	E.SkinDropDownBox(LFDQueueFrameTypeDropDown, 300)
 	LFDQueueFrameTypeDropDown:Point("RIGHT",-10,0)
 	LFDQueueFrameCapBar:CreateBackdrop("Transparent")

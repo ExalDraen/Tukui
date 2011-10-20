@@ -503,76 +503,81 @@ function ElvuiConfig.GenerateOptionsInternal()
 				
 				for i, spell in pairs(spelltable[E.myclass][curfilter]) do
 					local id = spell["id"]
-					newtable["SelectSpell"]["values"][id] = GetSpellInfo(id)
+					local name = GetSpellInfo(id)
+					if not name then
+						spelltable[E.myclass][curfilter][i] = nil
+					else
+						newtable["SelectSpell"]["values"][id] = GetSpellInfo(id)
 
-					if id == db.spellfilter["SelectSpell"] then
-						newtable["SpellGroup"] = {
-							order = 3,
-							type = "group",
-							name = GetSpellInfo(id).." ("..id..")",
-							guiInline = true,				
-							args = {
-								Enabled = {
-									type = "toggle",
-									order = 1,
-									name = L["Enabled"],
-									get = function(info) return db.spellfilter[tab][E.myclass][curfilter][i]["enabled"] end,
-									set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["enabled"] = value; StaticPopup_Show("CFG_RELOAD") end,										
-								},
-								CastByAnyone = {
-									type = "toggle",
-									order = 2,
-									name = L["Any Unit"],
-									desc = L["Display the buff if cast by anyone?"],
-									get = function(info) return db.spellfilter[tab][E.myclass][curfilter][i]["castByAnyone"] end,
-									set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["castByAnyone"] = value; StaticPopup_Show("CFG_RELOAD") end,									
-								},
-								Color = {
-									type = "color",
-									order = 3,
-									name = L["Color"],
-									hasAlpha = false,
-									get = function(info)
-										local t = db.spellfilter[tab][E.myclass][curfilter][i]["color"]
-										if not t then
-											t = {}
-											t.r = 0
-											t.g = 0
-											t.b = 0
-										end
-										
-										return t.r, t.g, t.b
-									end,
-									set = function(info, r, g, b)
-										db.spellfilter[tab][E.myclass][curfilter][i]["color"] = {}
-										local t = db.spellfilter[tab][E.myclass][curfilter][i]["color"]
-										t.r, t.g, t.b = r, g, b
-										StaticPopup_Show("CFG_RELOAD")
-									end,							
-								},
-								UnitType = {
-									type = "select",
-									order = 4,
-									name = L["Unit Type"],
-									desc = L["Only display on this type of unit"],
-									values = {
-										[0] = L["All"],
-										[1] = L["Friendly"],
-										[2] = L["Enemy"],
+						if id == db.spellfilter["SelectSpell"] then
+							newtable["SpellGroup"] = {
+								order = 3,
+								type = "group",
+								name = GetSpellInfo(id).." ("..id..")",
+								guiInline = true,				
+								args = {
+									Enabled = {
+										type = "toggle",
+										order = 1,
+										name = L["Enabled"],
+										get = function(info) return db.spellfilter[tab][E.myclass][curfilter][i]["enabled"] end,
+										set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["enabled"] = value; StaticPopup_Show("CFG_RELOAD") end,										
 									},
-									get = function(info) if db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] == nil then return 0 else return db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] end end,
-									set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] = value; StaticPopup_Show("CFG_RELOAD") end,									
+									CastByAnyone = {
+										type = "toggle",
+										order = 2,
+										name = L["Any Unit"],
+										desc = L["Display the buff if cast by anyone?"],
+										get = function(info) return db.spellfilter[tab][E.myclass][curfilter][i]["castByAnyone"] end,
+										set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["castByAnyone"] = value; StaticPopup_Show("CFG_RELOAD") end,									
+									},
+									Color = {
+										type = "color",
+										order = 3,
+										name = L["Color"],
+										hasAlpha = false,
+										get = function(info)
+											local t = db.spellfilter[tab][E.myclass][curfilter][i]["color"]
+											if not t then
+												t = {}
+												t.r = 0
+												t.g = 0
+												t.b = 0
+											end
+											
+											return t.r, t.g, t.b
+										end,
+										set = function(info, r, g, b)
+											db.spellfilter[tab][E.myclass][curfilter][i]["color"] = {}
+											local t = db.spellfilter[tab][E.myclass][curfilter][i]["color"]
+											t.r, t.g, t.b = r, g, b
+											StaticPopup_Show("CFG_RELOAD")
+										end,							
+									},
+									UnitType = {
+										type = "select",
+										order = 4,
+										name = L["Unit Type"],
+										desc = L["Only display on this type of unit"],
+										values = {
+											[0] = L["All"],
+											[1] = L["Friendly"],
+											[2] = L["Enemy"],
+										},
+										get = function(info) if db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] == nil then return 0 else return db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] end end,
+										set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["unitType"] = value; StaticPopup_Show("CFG_RELOAD") end,									
+									},
+									CastSpellID = {
+										type = "input",
+										order = 5,
+										name = L["Show Ticks"],
+										desc = L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."],
+										get = function(info) if db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] == nil then return "" else return db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] end end,
+										set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] = value; StaticPopup_Show("CFG_RELOAD") end,									
+									},
 								},
-								CastSpellID = {
-									type = "input",
-									order = 5,
-									name = L["Show Ticks"],
-									desc = L["Fill only if you want to see line on bar that indicates if its safe to start casting spell and not clip the last tick, also note that this can be different from aura id."],
-									get = function(info) if db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] == nil then return "" else return db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] end end,
-									set = function(info, value) db.spellfilter[tab][E.myclass][curfilter][i]["castSpellId"] = value; StaticPopup_Show("CFG_RELOAD") end,									
-								},
-							},
-						}					
+							}					
+						end
 					end
 				end
 			end
@@ -1471,23 +1476,29 @@ function ElvuiConfig.GenerateOptionsInternal()
 								name = L["Display Aggro"],
 								desc = L["Enable red glow around the player frame when you have aggro"],
 							},
+							vengeancebar = {
+								type = 'toggle',
+								order = 26,
+								name = L['Vengeance Bar'],
+								desc = L['Display a bar on the player unitframe while tanking that shows your current vengeance verse your maximum vengeance you can obtain.'],
+							},
 							powerbar_offset = {
 								type = "range",
-								order = 26,
+								order = 27,
 								name = L["Powerbar Offset"],
 								desc = L["Detach and offset the power bar on the main unitframes"],
 								min = 0, max = 12, step = 1,	
 							},
 							powerbar_height = {
 								type = "range",
-								order = 27,
+								order = 28,
 								name = L["Powerbar Height"],
 								desc = L["Set the height of the powerbar, this is void if you don't have powerbar offset set to zero."],
 								min = 5, max = 25, step = 1,								
 							},
 							classbar_height = {
 								type = "range",
-								order = 28,
+								order = 29,
 								name = L["Classbar Height"],
 								desc = L["Set the height of the classbar."],
 								min = 5, max = 25, step = 1,								
@@ -2648,6 +2659,20 @@ function ElvuiConfig.GenerateOptionsInternal()
 								order = 8,
 								name = L["Chat Bubbles"],
 								desc = L["Skin Blizzard's Chat Bubbles"],							
+							},
+							spamFilter = {
+								type = 'toggle',
+								order = 9,
+								name = L['Gold Spam Block'],
+								desc = L['Block messages containing common phrases used by gold sellers, report the player and also send a custom message to the player each time they spam.'],
+								disabled = function() return E.client ~= "enUS" and E.client ~= "enGB" end,
+							},
+							spamResponseMessage = {
+								type = 'input',
+								order = 10,
+								name = L['Spam response'],
+								width = 'full',
+								disabled = function() return not db.chat.spamFilter or E.client ~= "enUS" and E.client ~= "enGB" end,
 							},
 						},
 					},

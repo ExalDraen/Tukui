@@ -138,6 +138,7 @@ DB["unitframes"] = {
 	["displayaggro"] = true,
 	["powerbar_height"] = 10,
 	["classbar_height"] = 10,
+	['vengeancebar'] = false,
 	
 	--frame sizes
 	["playtarwidth"] = 275,					--width of player/target frame
@@ -317,6 +318,8 @@ DB["chat"] = {
 	["sticky"] = true,						-- when opening the chat edit box resort to previous channel
 	["combathide"] = "NONE",			-- Set to "Left", "Right", "Both", or "NONE"
 	["bubbles"] = true,							--skin blizzard chat bubbles
+	['spamFilter'] = false,
+	['spamResponseMessage'] = 'Stop spamming trade, get a real job loser. Have fun being reported.',
 }
 
 DB["tooltip"] = {

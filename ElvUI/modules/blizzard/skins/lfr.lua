@@ -1,6 +1,7 @@
 local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 if C["skin"].enable ~= true or C["skin"].lfr ~= true then return end
 
+
 local function LoadSkin()
 	local buttons = {
 	  "LFRQueueFrameFindGroupButton",
@@ -11,7 +12,11 @@ local function LoadSkin()
 	}
 
 	LFRParentFrame:StripTextures()
-	LFRParentFrame:SetTemplate("Transparent")
+	
+	if not E.IsPTRVersion() then
+		LFRParentFrame:SetTemplate("Transparent")
+	end
+	
 	LFRQueueFrame:StripTextures()
 	LFRBrowseFrame:StripTextures()
 
@@ -57,6 +62,27 @@ local function LoadSkin()
 	LFRQueueFrameRoleButtonDPS:GetChildren():SetFrameLevel(LFRQueueFrameRoleButtonDPS:GetChildren():GetFrameLevel() + 2)
 	
 	LFRQueueFrameSpecificListScrollFrame:StripTextures()
+	
+	--Skill Line Tabs
+	for i=1, 2 do
+		local tab = _G["LFRParentFrameSideTab"..i]
+		if tab then
+			local tex = tab:GetNormalTexture():GetTexture()
+			tab:StripTextures()
+			tab:GetNormalTexture():SetTexCoord(.08, .92, .08, .92)
+			tab:GetNormalTexture():ClearAllPoints()
+			tab:GetNormalTexture():Point("TOPLEFT", 2, -2)
+			tab:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
+			tab:SetNormalTexture(tex)
+			
+			tab:CreateBackdrop("Default")
+			tab.backdrop:SetAllPoints()
+			tab:StyleButton(true)				
+			
+			local point, relatedTo, point2, x, y = tab:GetPoint()
+			tab:Point(point, relatedTo, point2, 1, y)
+		end
+	end
 end
 
 tinsert(E.SkinFuncs["ElvUI"], LoadSkin)

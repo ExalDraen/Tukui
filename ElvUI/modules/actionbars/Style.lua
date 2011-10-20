@@ -9,7 +9,7 @@ local securehandler = CreateFrame("Frame", nil, nil, "SecureHandlerBaseTemplate"
 function Style(self, totem, flyout)
 	local name = self:GetName()
 	
-	if name:match("MultiCast") then return end 
+	if name:match("MultiCast") or name:match("ExtraActionButton") then return end 
 	
 	local action = self.action
 	local Button = self
@@ -20,6 +20,10 @@ function Style(self, totem, flyout)
 	local Border  = _G[name.."Border"]
 	local Btname = _G[name.."Name"]
 	local normal  = _G[name.."NormalTexture"]
+	
+	if E.IsPTRVersion() and _G[name..'FloatingBG'] then
+		_G[name..'FloatingBG']:Kill()
+	end
 	
 	if Flash then
 		Flash:SetTexture("")
@@ -196,8 +200,10 @@ SpellFlyout:HookScript("OnShow", SetupFlyoutButton)
  
 --Hide the Mouseover texture and attempt to find the ammount of buttons to be skinned
 local function StyleFlyout(self)
-	self.FlyoutBorder:SetAlpha(0)
-	self.FlyoutBorderShadow:SetAlpha(0)
+	if not E.IsPTRVersion() then
+		self.FlyoutBorder:SetAlpha(0)
+		self.FlyoutBorderShadow:SetAlpha(0)
+	end
 	
 	SpellFlyoutHorizontalBackground:SetAlpha(0)
 	SpellFlyoutVerticalBackground:SetAlpha(0)

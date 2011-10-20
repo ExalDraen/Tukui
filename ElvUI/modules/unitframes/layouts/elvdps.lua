@@ -84,10 +84,16 @@ local function Shared(self, unit)
 		local CASTBAR_HEIGHT = C["unitframes"].castplayerheight*E.ResScale
 		local CASTBAR_WIDTH = C["unitframes"].castplayerwidth*E.ResScale
 		local PORTRAIT_WIDTH = 45*E.ResScale
+		local VBAR_WIDTH = 12*E.ResScale
+		local USE_VENGEANCE_BAR = C['unitframes'].vengeancebar
 
 		local mini_classbarY = 0
 		if MINI_CLASSBAR then
 			mini_classbarY = -(SPACING+(CLASSBAR_HEIGHT/2))
+		end
+		
+		if not USE_VENGEANCE_BAR then
+			VBAR_WIDTH = 0
 		end
 		
 		--Threat Glow
@@ -148,7 +154,7 @@ local function Shared(self, unit)
 		elseif POWERTHEME == true then
 			power:Width(POWERBAR_WIDTH - BORDER*2)
 			power:Height(POWERBAR_HEIGHT - BORDER*2)
-			power:Point("RIGHT", self, "BOTTOMRIGHT", -(BORDER*2 + 4), BORDER + (POWERBAR_HEIGHT/2))
+			power:Point("BOTTOMRIGHT", health, "BOTTOMRIGHT", -(BORDER*2 + 4), -(POWERBAR_HEIGHT/2))
 			power:SetFrameStrata("MEDIUM")
 			power:SetFrameLevel(self:GetFrameLevel() + 3)
 		else
@@ -157,6 +163,21 @@ local function Shared(self, unit)
 		end
 		power.value:Point("LEFT", health, "LEFT", 4, 0)
 		self.Power = power
+		
+		--Vengeance Bar
+		if USE_VENGEANCE_BAR then
+			local vbar = CreateFrame('StatusBar', nil, self)
+			vbar.offset = VBAR_WIDTH
+			vbar:SetFrameStrata('LOW')
+			vbar:Point('TOPLEFT', health, 'TOPRIGHT', (BORDER*2 + SPACING), 0)
+			vbar:Point('BOTTOMRIGHT', health, 'BOTTOMRIGHT', VBAR_WIDTH, 0)
+			vbar:SetOrientation("VERTICAL")
+			vbar:SetStatusBarTexture(C["media"].normTex)
+			vbar:SetStatusBarColor(0.8, 0.1, 0.1)
+			vbar:CreateBackdrop('Default')
+			vbar.PostUpdate = E.PostVengeanceUpdate
+			self.Vengeance = vbar
+		end
 		
 		--Druid Power Bar
 		if E.myclass == "DRUID" then
@@ -565,18 +586,37 @@ local function Shared(self, unit)
 					bars.backdrop:SetFrameLevel(bars:GetFrameLevel() - 1)
 					
 					bars:SetScript("OnShow", function()
+						local VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
+						end
+						
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET+VBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING+VBAR_OFFSET))
 						end
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
-					bars:HookScript("OnHide", function()	
+					bars:HookScript("OnHide", function()
+						local VBAR_OFFSET = 0
+						
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
+						end
+						
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -BORDER)
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET+VBAR_OFFSET), -BORDER)
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+VBAR_OFFSET), -BORDER)
 						end
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -BORDER)		
 					end)			
@@ -639,22 +679,41 @@ local function Shared(self, unit)
 					runes.backdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
 					runes.backdrop:SetFrameLevel(runes:GetFrameLevel() - 1)
 
-					runes:HookScript("OnShow", function()
+					runes:SetScript("OnShow", function()
+						local VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
+						end
+						
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET+VBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING+VBAR_OFFSET))
 						end
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					runes:HookScript("OnHide", function()
+						local VBAR_OFFSET = 0
+						
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
+						end
+						
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -BORDER)
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET+VBAR_OFFSET), -BORDER)
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+VBAR_OFFSET), -BORDER)
 						end
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -BORDER)		
-					end)	
+					end)
 				end
 				
 				self.Runes = runes
@@ -718,19 +777,38 @@ local function Shared(self, unit)
 					totems.backdrop:Point("BOTTOMRIGHT", BORDER, -BORDER)
 					totems.backdrop:SetFrameLevel(totems:GetFrameLevel() - 1)
 					
-					totems:HookScript("OnShow", function()
+					totems:SetScript("OnShow", function()
+						local VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
+						end
+						
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET+VBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING+VBAR_OFFSET))
 						end
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					totems:HookScript("OnHide", function()
+						local VBAR_OFFSET = 0
+						
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
+						end
+						
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -BORDER)
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET+VBAR_OFFSET), -BORDER)
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+VBAR_OFFSET), -BORDER)
 						end
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -BORDER)		
 					end)
@@ -777,21 +855,40 @@ local function Shared(self, unit)
 				eclipseBar.backdrop:SetFrameLevel(eclipseBar:GetFrameLevel() - 1)
 				
 				if not MINI_CLASSBAR then
-					eclipseBar:HookScript("OnShow", function()
+					eclipseBar:SetScript("OnShow", function()
+						local VBAR_OFFSET = 0
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
+						end
+						
 						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET+VBAR_OFFSET), -(BORDER+CLASSBAR_HEIGHT+SPACING))
 						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING+VBAR_OFFSET))
 						end
 						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -(BORDER+CLASSBAR_HEIGHT+SPACING))
 					end)
 					eclipseBar:HookScript("OnHide", function()
-						if USE_POWERBAR_OFFSET then
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET), -BORDER)
-						else
-							health:Point("TOPRIGHT", self, "TOPRIGHT", -BORDER, -BORDER)
+						local VBAR_OFFSET = 0
+						
+						if self.Vengeance then
+							VBAR_OFFSET = self.Vengeance.offset
+							
+							if not self.Vengeance:IsShown() then
+								VBAR_OFFSET = 0
+							end
 						end
-						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -BORDER)
+						
+						if USE_POWERBAR_OFFSET then
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+POWERBAR_OFFSET+VBAR_OFFSET), -BORDER)
+						else
+							health:Point("TOPRIGHT", self, "TOPRIGHT", -(BORDER+VBAR_OFFSET), -BORDER)
+						end
+						health:Point("TOPLEFT", self, "TOPLEFT", PORTRAIT_WIDTH+BORDER, -BORDER)		
 					end)
 				end
 				
@@ -802,8 +899,8 @@ local function Shared(self, unit)
 		
 		--Druid Mana
 		if E.myclass == "DRUID" then
-			self:FontString("DruidMana", FONT, FONTSIZE, "THINOUTLINE")
-			self.DruidMana:SetTextColor(1, 0.49, 0.04)	
+			self:FontString("DruidManaText", FONT, FONTSIZE, "THINOUTLINE")
+			self.DruidManaText:SetTextColor(1, 0.49, 0.04)	
 			self:HookScript("OnUpdate", E.UpdateDruidMana)
 		end
 		
@@ -1638,8 +1735,19 @@ do
 	local PET_DISMISS = "PET_DISMISS"
 	if E.myclass == "HUNTER" then
 		PET_DISMISS = nil;
+		local x = CreateFrame('Frame')
+		x:RegisterEvent('UPDATE_BONUS_ACTIONBAR')
+		--We need to re-add the PET_DISMISS option to rightclick if the bonus actionbar is visible and you have a pet out
+		--Bugfix for karazhan chess event
+		x:SetScript('OnEvent', function()
+			if UnitExists('pet') and ActionButton1:GetAttribute("actionpage") == 11 then
+				UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "PET_DISMISS", "CANCEL" };
+			else
+				UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", "CANCEL" };
+			end	
+		end)
 	end
-	
+
 	UnitPopupMenus["SELF"] = { "PVP_FLAG", "LOOT_METHOD", "LOOT_THRESHOLD", "OPT_OUT_LOOT_TITLE", "LOOT_PROMOTE", "DUNGEON_DIFFICULTY", "RAID_DIFFICULTY", "RESET_INSTANCES", "RAID_TARGET_ICON", "SELECT_ROLE", "CONVERT_TO_PARTY", "CONVERT_TO_RAID", "LEAVE", "CANCEL" };
 	UnitPopupMenus["PET"] = { "PET_PAPERDOLL", "PET_RENAME", "PET_ABANDON", PET_DISMISS, "CANCEL" };
 	UnitPopupMenus["PARTY"] = { "MUTE", "UNMUTE", "PARTY_SILENCE", "PARTY_UNSILENCE", "RAID_SILENCE", "RAID_UNSILENCE", "BATTLEGROUND_SILENCE", "BATTLEGROUND_UNSILENCE", "WHISPER", "PROMOTE", "PROMOTE_GUIDE", "LOOT_PROMOTE", "VOTE_TO_KICK", "UNINVITE", "INSPECT", "ACHIEVEMENTS", "TRADE", "FOLLOW", "DUEL", "RAID_TARGET_ICON", "SELECT_ROLE", "PVP_REPORT_AFK", "RAF_SUMMON", "RAF_GRANT_LEVEL", "CANCEL" }

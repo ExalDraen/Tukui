@@ -65,8 +65,10 @@ end
 E.CreateMover(Minimap, "MinimapMover", "Minimap", nil, E.PostMinimapMove) --Too easy muahaha
 
 --just incase these dont fit on the screen when you move the minimap
-LFDSearchStatus:SetClampedToScreen(true)
-LFDDungeonReadyStatus:SetClampedToScreen(true)
+if not E.IsPTRVersion() then
+	LFDSearchStatus:SetClampedToScreen(true)
+	LFDDungeonReadyStatus:SetClampedToScreen(true)
+end
 
 -- Hide Border
 MinimapBorder:Hide()
@@ -198,9 +200,9 @@ local menuList = {
 	{text = LFG_TITLE,
 	func = function() ToggleFrame(LFDParentFrame) end},
 	{text = LOOKING_FOR_RAID,
-	func = function() ToggleFrame(LFRParentFrame) end},
+	func = function() if E.IsPTRVersion() then ToggleFriendsFrame(4) else ToggleFrame(LFRParentFrame) end end},
 	{text = ENCOUNTER_JOURNAL, 
-	func = function() ToggleFrame(EncounterJournal) end},	
+	func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') and E.IsPTRVersion() then LoadAddOn('Blizzard_EncounterJournal'); end ToggleFrame(EncounterJournal) end},	
 	{text = L_CALENDAR,
 	func = function()
 	if(not CalendarFrame) then LoadAddOn("Blizzard_Calendar") end
@@ -235,7 +237,9 @@ Minimap:SetMaskTexture('Interface\\ChatFrame\\ChatFrameBackground')
 function GetMinimapShape() return 'SQUARE' end
 
 -- reskin LFG dropdown
-LFDSearchStatus:SetTemplate("Default")
+if not E.IsPTRVersion() then
+	LFDSearchStatus:SetTemplate("Default")
+end
 
 local function GetLocTextColor()
 	local pvpType = GetZonePVPInfo()

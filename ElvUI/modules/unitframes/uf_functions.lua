@@ -290,7 +290,7 @@ E.LoadUFFunctions = function(layout)
 
 				if isPlayer then
 					return true
-				elseif E.DebuffWhiteList[name] or (inInstance and ((instanceType == "pvp" or instanceType == "arena") and E.TargetPVPOnly[name])) then
+				elseif (E.DebuffWhiteList[name] == E.myclass or E.DebuffWhiteList[name] == true) or (inInstance and ((instanceType == "pvp" or instanceType == "arena") and E.TargetPVPOnly[name])) then
 					return true
 				else
 					return false
@@ -382,7 +382,7 @@ E.LoadUFFunctions = function(layout)
 			else
 				if min ~= max then
 					local r, g, b
-					r, g, b = oUF.ColorGradient(min/max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+					r, g, b = oUF.ColorGradient(min, max, 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 					if unit == "player" and health:GetAttribute("normalUnit") ~= "pet" then
 						if C["unitframes"].showtotalhpmp == true then
 							health.value:SetFormattedText("|cff559655%s|r |cffD7BEA5|||r |cff559655%s|r", E.ShortValue(min), E.ShortValue(max))
@@ -624,7 +624,7 @@ E.LoadUFFunctions = function(layout)
 					self.text:Hide()
 					self:SetScript("OnUpdate", nil)
 				end
-				if (not self.debuff) and C["general"].classcolortheme == true then
+				if (not self.isDebuff) and C["general"].classcolortheme == true then
 					local r, g, b = self:GetParent():GetParent().Health.backdrop:GetBackdropBorderColor()
 					self:SetBackdropBorderColor(r, g, b)
 				end
@@ -707,7 +707,7 @@ E.LoadUFFunctions = function(layout)
 	function E.PostUpdateAura(icons, unit, icon, index, offset, filter, isDebuff, duration, timeLeft)
 		local name, _, _, _, dtype, duration, expirationTime, unitCaster, _, _, spellID = UnitAura(unit, index, icon.filter)
 		
-		if(icon.debuff) then
+		if(icon.isDebuff) then
 			if(not UnitIsFriend("player", unit) and icon.owner ~= "player" and icon.owner ~= "vehicle") and (not E.DebuffWhiteList[name]) then
 				icon:SetBackdropBorderColor(unpack(C["media"].bordercolor))
 				icon.icon:SetDesaturated(true)
@@ -916,19 +916,51 @@ E.LoadUFFunctions = function(layout)
 
 			if min ~= max then
 				if self.Power.value:GetText() then
-					self.DruidMana:SetPoint("LEFT", self.Power.value, "RIGHT", -3, 0)
-					self.DruidMana:SetFormattedText("|cffD7BEA5-|r %d%%|r", floor(min / max * 100))
+					self.DruidManaText:SetPoint("LEFT", self.Power.value, "RIGHT", -3, 0)
+					self.DruidManaText:SetFormattedText("|cffD7BEA5-|r %d%%|r", floor(min / max * 100))
 				else
-					self.DruidMana:SetPoint("LEFT", self.Health, "LEFT", 4, 1)
-					self.DruidMana:SetFormattedText("%d%%", floor(min / max * 100))
+					self.DruidManaText:SetPoint("LEFT", self.Health, "LEFT", 4, 1)
+					self.DruidManaText:SetFormattedText("%d%%", floor(min / max * 100))
 				end
 			else
-				self.DruidMana:SetText()
+				self.DruidManaText:SetText()
 			end
 
-			self.DruidMana:SetAlpha(1)
+			self.DruidManaText:SetAlpha(1)
 		else
-			self.DruidMana:SetAlpha(0)
+			self.DruidManaText:SetAlpha(0)
+		end
+	end
+	
+	function E.PostVengeanceUpdate(self, name)
+		local VBAR_OFFSET = self.offset
+		local health = self:GetParent().Health
+		local BORDER = 2*E.ResScale
+		local SPACING = 1*E.ResScale		
+		local CLASSBAR_HEIGHT = (C["unitframes"].classbar_height)*E.ResScale
+		if not name or not self:IsShown() then
+			VBAR_OFFSET = 0
+		end
+		
+		if C["unitframes"].classbar == true and E.myclass ~= "WARRIOR" then
+			local DEPTH
+			if C["unitframes"].mini_classbar then
+				DEPTH = -(BORDER+(CLASSBAR_HEIGHT/2))
+			else
+				DEPTH = -(BORDER+CLASSBAR_HEIGHT+SPACING)
+			end
+			
+			if C["unitframes"].powerbar_offset ~= 0 then
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -(BORDER + C["unitframes"].powerbar_offset + VBAR_OFFSET), DEPTH)
+			else
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -(BORDER + VBAR_OFFSET), DEPTH)
+			end		
+		else
+			if C["unitframes"].powerbar_offset ~= 0 then
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -(BORDER + C["unitframes"].powerbar_offset + VBAR_OFFSET), -BORDER)
+			else
+				health:Point("TOPRIGHT", self:GetParent(), "TOPRIGHT", -(BORDER + VBAR_OFFSET), -BORDER)
+			end
 		end
 	end
 

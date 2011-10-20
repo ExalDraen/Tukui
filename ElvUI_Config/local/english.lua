@@ -169,6 +169,8 @@ L["Unit Frames"] = true
 		L["Set the height of the powerbar, this is void if you don't have powerbar offset set to zero."] = true
 	L["Classbar Height"] = true
 		L["Set the height of the classbar."] = true
+	L['Vengeance Bar'] = true;
+		L['Display a bar on the player unitframe while tanking that shows your current vengeance verse your maximum vengeance you can obtain.'] = true;
 	
 L["Frame Sizes"] = true
 	L["Controls the size of the frame"] = true
@@ -643,6 +645,10 @@ L["SPELL_FILTER_DESC"] = "Filter everything from spell names to nameplate names.
 		L["Only run checks inside BG/Arena instances"] = true
 	L["During Combat"] = true
 		L["Only run checks during combat"] = true
+		
+	L['Gold Spam Block'] = true
+		L['Block messages containing common phrases used by gold sellers, report the player and also send a custom message to the player each time they spam.'] = true
+	L['Spam response'] = true
 	
 --Profiles
 L["Profiles"] = true

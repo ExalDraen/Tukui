@@ -35,7 +35,7 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 		end	
 
 
-		if E.myclass == "DEATHKNIGHT" then
+		if E.myclass == "DEATHKNIGHT" and C["raidframes"].disableblizz == true and C['unitframes'].enable == true then
 			RuneFrame:Kill()
 		end
 		
@@ -95,7 +95,9 @@ Kill:SetScript("OnEvent", function(self, event, addon)
 			InterfaceOptionsCombatPanelTargetOfTarget:Kill()
 			InterfaceOptionsDisplayPanelShowAggroPercentage:Kill()
 			InterfaceOptionsBuffsPanelDispellableDebuffs:Kill()
-			InterfaceOptionsBuffsPanelShowCastableDebuffs:Kill()
+			if not E.IsPTRVersion() then
+				InterfaceOptionsBuffsPanelShowCastableDebuffs:Kill()
+			end
 			InterfaceOptionsBuffsPanelCastableBuffs:Kill()
 		end
 		
