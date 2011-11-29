@@ -46,4 +46,3 @@ function M:Initialize()
 end
 
 E:RegisterModule(M:GetName())
->>>>>>> 912d6c50767765f7eac2ef0669089b1ed877d287
