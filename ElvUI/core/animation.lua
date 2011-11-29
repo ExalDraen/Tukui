@@ -1,80 +1,79 @@
 ------------------------------------------------------------------------
--- Animation Functions (Credit AlleyCat, Hydra)
+-- Animation Functions
 ------------------------------------------------------------------------
-local E, C, L, DB = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
+local E, L, DF = unpack(select(2, ...)); --Engine
 
-E.SetUpAnimGroup = function(self)
-	self.anim = self:CreateAnimationGroup("Flash")
-	self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
-	self.anim.fadein:SetChange(1)
-	self.anim.fadein:SetOrder(2)
+function E:SetUpAnimGroup(object, type, ...)
+	if not type then type = 'Flash' end
+	
+	if type == 'Flash' then
+		object.anim = object:CreateAnimationGroup("Flash")
+		object.anim.fadein = object.anim:CreateAnimation("ALPHA", "FadeIn")
+		object.anim.fadein:SetChange(1)
+		object.anim.fadein:SetOrder(2)
 
-	self.anim.fadeout = self.anim:CreateAnimation("ALPHA", "FadeOut")
-	self.anim.fadeout:SetChange(-1)
-	self.anim.fadeout:SetOrder(1)
+		object.anim.fadeout = object.anim:CreateAnimation("ALPHA", "FadeOut")
+		object.anim.fadeout:SetChange(-1)
+		object.anim.fadeout:SetOrder(1)
+	else
+		local x, y, duration, customName = ...
+		if not customName then
+			customName = 'anim'
+		end
+		object[customName] = object:CreateAnimationGroup("Move_In")
+		object[customName].in1 = object[customName]:CreateAnimation("Translation")
+		object[customName].in1:SetDuration(0)
+		object[customName].in1:SetOrder(1)
+		object[customName].in2 = object[customName]:CreateAnimation("Translation")
+		object[customName].in2:SetDuration(duration)
+		object[customName].in2:SetOrder(2)
+		object[customName].in2:SetSmoothing("OUT")
+		object[customName].out1 = object:CreateAnimationGroup("Move_Out")
+		object[customName].out2 = object[customName].out1:CreateAnimation("Translation")
+		object[customName].out2:SetDuration(duration)
+		object[customName].out2:SetOrder(1)
+		object[customName].out2:SetSmoothing("IN")
+		object[customName].in1:SetOffset(E:Scale(x), E:Scale(y))
+		object[customName].in2:SetOffset(E:Scale(-x), E:Scale(-y))
+		object[customName].out2:SetOffset(E:Scale(x), E:Scale(y))
+		object[customName].out1:SetScript("OnFinished", function() object:Hide() end)	
+	end
 end
 
-E.Flash = function(self, duration)
-	if not self.anim then
-		E.SetUpAnimGroup(self)
+function E:Flash(object, duration)
+	if not object.anim then
+		E:SetUpAnimGroup(object, 'Flash')
 	end
 
-	self.anim.fadein:SetDuration(duration)
-	self.anim.fadeout:SetDuration(duration)
-	self.anim:Play()
+	object.anim.fadein:SetDuration(duration)
+	object.anim.fadeout:SetDuration(duration)
+	object.anim:Play()
 end
 
-E.StopFlash = function(self)
-	if self.anim then
-		self.anim:Finish()
+function E:StopFlash(object)
+	if object.anim then
+		object.anim:Finish()
 	end
 end
 
-E.AnimGroup = function (self,x,y,duration)
-	self.anim = self:CreateAnimationGroup("Move_In")
-	self.anim.in1 = self.anim:CreateAnimation("Translation")
-	self.anim.in1:SetDuration(0)
-	self.anim.in1:SetOrder(1)
-	self.anim.in2 = self.anim:CreateAnimation("Translation")
-	self.anim.in2:SetDuration(duration)
-	self.anim.in2:SetOrder(2)
-	self.anim.in2:SetSmoothing("OUT")
-	self.anim_o = self:CreateAnimationGroup("Move_Out")
-	self.anim_out2 = self.anim_o:CreateAnimation("Translation")
-	self.anim_out2:SetDuration(duration)
-	self.anim_out2:SetOrder(1)
-	self.anim_out2:SetSmoothing("IN")
-	self.anim.in1:SetOffset(x,y)
-	self.anim.in2:SetOffset(-x,-y)
-	self.anim_out2:SetOffset(x,y)
-	self.anim_o:SetScript("OnFinished",function() self:Hide() end)
+function E:SlideIn(object, customName)
+	if not customName then
+		customName = 'anim'
+	end
+	if not object[customName] then return end
+	
+	object[customName].out1:Stop()
+	object:Show()
+	object[customName]:Play()
 end
 
-E.SlideIn = function(self)
-	if not self.anim then
-		E.AnimGroup(self)
+function E:SlideOut(object, customName)
+	if not customName then
+		customName = 'anim'
 	end
-
-	self.anim_o:Stop()
-	self:Show()
-	self.anim:Play()
-    -- New line for Skada
-    if IsAddOnLoaded("Skada") and self:GetName() == "ChatRBackground" then
-        Skada:SetActive(false)
-    end
-    -- New line for Skada
-end
-
-E.SlideOut = function(self)
-	if self.anim then
-		self.anim:Finish()
-	end
-
-	self.anim:Stop()
-	self.anim_o:Play()
-    -- New line for Skada
-  if IsAddOnLoaded("Skada") and self:GetName() == "ChatRBackground" then
-        Skada:SetActive(true)
-    end
-    -- New line for Skada
+	if not object[customName] then return end
+	
+	object[customName]:Finish() 
+	object[customName]:Stop()
+	object[customName].out1:Play()
 end
