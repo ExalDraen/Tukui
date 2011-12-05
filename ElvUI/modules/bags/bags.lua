@@ -141,8 +141,13 @@ function B:SlotUpdate(b)
 	end
 	
 	if b.Cooldown then
-		local cd_start, cd_finish, cd_enable = GetContainerItemCooldown(b.bag, b.slot)
-		CooldownFrame_SetTimer(b.Cooldown, cd_start, cd_finish, cd_enable)	
+		local start, duration, enable = GetContainerItemCooldown(b.bag, b.slot)
+		CooldownFrame_SetTimer(b.Cooldown, start, duration, enable)	
+		if ( duration > 0 and enable == 0 ) then
+			SetItemButtonTextureVertexColor(b.frame, 0.4, 0.4, 0.4);
+		else
+			SetItemButtonTextureVertexColor(b.frame, 1, 1, 1);
+		end		
 	end
 
 	if(clink) then
@@ -1248,6 +1253,11 @@ hooksecurefunc("updateContainerFrameAnchors", function()
 	end		
 end)
 
+function B:PLAYERBANKBAGSLOTS_CHANGED()
+	B:PLAYERBANKSLOTS_CHANGED(29)
+	B:Layout(true)
+end
+
 function B:PLAYER_LOGIN() --Taint Fix
 	ToggleBackpack()
 	ToggleBackpack()
@@ -1265,6 +1275,7 @@ function B:Initialize()
 	self:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
 	self:RegisterEvent("BAG_CLOSED")	
 	self:RegisterEvent('BAG_UPDATE_COOLDOWN')
+	self:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
 	self:RegisterEvent('PLAYER_LOGIN')
 	self:RegisterEvent('GUILDBANKBAGSLOTS_CHANGED')
 	self:SecureHook('BankFrameItemButton_Update', 'PLAYERBANKSLOTS_CHANGED')

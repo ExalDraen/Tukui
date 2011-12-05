@@ -7,13 +7,13 @@ function B:PositionVehicleFrame()
 			VehicleSeatIndicator:ClearAllPoints()
 			
 			if VehicleSeatMover then
-				VehicleSeatIndicator:Point("TOPRIGHT", VehicleSeatMover, "TOPRIGHT", 0, 0)
+				VehicleSeatIndicator:Point("TOPLEFT", VehicleSeatMover, "TOPLEFT", 0, 0)
 			else
 				VehicleSeatIndicator:Point("TOPLEFT", E.UIParent, "TOPLEFT", 22, -45)
 				E:CreateMover(VehicleSeatIndicator, "VehicleSeatMover", "Vehicle Seat Frame")	
 			end
 			
-			VehicleSeatIndicator:SetScale(0.8)
+			VehicleSeatIndicator:SetScale(0.8)		
 		end
 	end)
 end
