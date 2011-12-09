@@ -66,17 +66,19 @@ function AB:CreateVehicleLeave()
 end
 
 function AB:ReassignBindings()
-	if InCombatLockdown() then return end
-	if not ElvUI_Bar1 then return end
-	local frame = ElvUI_Bar1
-
-	ClearOverrideBindings(frame)
-	for i = 1, #frame.buttons do
-		local button, real_button = ("ACTIONBUTTON%d"):format(i), ("ElvUI_Bar1Button%d"):format(i)
-		for k=1, select('#', GetBindingKey(button)) do
-			local key = select(k, GetBindingKey(button))
-			if key and key ~= "" then
-				SetOverrideBindingClick(frame, false, key, real_button)
+	if InCombatLockdown() then return end	
+	for bar, _ in pairs(self["handledBars"]) do
+		if not bar then return end
+		
+		ClearOverrideBindings(bar)
+		for i = 1, #bar.buttons do
+			local button = (bar.bindButtons.."%d"):format(i)
+			local real_button = (bar:GetName().."Button%d"):format(i)
+			for k=1, select('#', GetBindingKey(button)) do
+				local key = select(k, GetBindingKey(button))
+				if key and key ~= "" then
+					SetOverrideBindingClick(bar, false, key, real_button)
+				end
 			end
 		end
 	end
@@ -284,7 +286,9 @@ function AB:DisableBlizzard()
 	UIPARENT_MANAGED_FRAME_POSITIONS["ShapeshiftBarFrame"] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS["PossessBarFrame"] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS["PETACTIONBAR_YPOS"] = nil
-
+	UIPARENT_MANAGED_FRAME_POSITIONS["MultiCastActionBarFrame"] = nil
+	UIPARENT_MANAGED_FRAME_POSITIONS["MULTICASTACTIONBAR_YPOS"] = nil
+	
 	MainMenuBar:UnregisterAllEvents()
 	MainMenuBar:Hide()
 	MainMenuBar:SetParent(UIHider)
@@ -337,7 +341,8 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.hideElements.macro = self.db.macrotext
 	bar.buttonConfig.hideElements.hotkey = self.db.hotkeytext
 	bar.buttonConfig.showGrid = GetCVar('alwaysShowActionBars') == '1' and true or false
-
+	bar.buttonConfig.clickOnDown = self.db.buttonActionMode == 'DOWN' and true or false
+	
 	for i, button in pairs(bar.buttons) do
 		bar.buttonConfig.keyBoundTarget = format(buttonName.."%d", i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget

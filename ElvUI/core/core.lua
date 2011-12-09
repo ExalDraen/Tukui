@@ -205,6 +205,7 @@ function E:CreateMoverPopup()
 	header:SetTemplate('Default', true)
 	header:SetWidth(100); header:SetHeight(25)
 	header:SetPoint("CENTER", f, 'TOP')
+	header:SetFrameLevel(header:GetFrameLevel() + 2)
 
 	local title = header:CreateFontString("OVERLAY")
 	title:FontTemplate()
@@ -322,8 +323,26 @@ function E:MoveUI(override, type)
 	end	
 end
 
+function E:ResetAllUI()
+	self:ResetMovers()
+	
+	if self.UnitFrames then
+		ElvUF:ResetUF()	
+	end
+	
+	if self.ActionBars then
+		self.ActionBars:ResetMovers()
+	end	
+end
+
 function E:ResetUI(...)
 	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
+	
+	if ... == '' or ... == ' ' or ... == nil then
+		StaticPopup_Show('RESETUI_CHECK')
+		return
+	end
+	
 	self:ResetMovers(...)
 	
 	if self.UnitFrames then

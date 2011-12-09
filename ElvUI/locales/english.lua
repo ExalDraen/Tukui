@@ -56,9 +56,7 @@ do
 	L["This part of the installation process sets up your chat windows names, positions and colors."] = true;
 	L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = true;
 	L["Setup Chat"] = true;
-	L['AutoHide Panels'] = true;
-	L['When a chat frame does not exist, hide the panel.'] = true;
-	
+		
 	L["Installation Complete"] = true;
 	L["You are now finished with the installation process. If you are in need technical support please visit us at www.tukui.org."] = true;
 	L["Please click the button below so you can setup variables and ReloadUI."] = true;
@@ -73,6 +71,22 @@ do
 	L["Movers unlocked. Move them now and click Lock when you are done."] = true;
 	L['Lock'] = true;
 	L["This can't be right, you must of broke something! Please turn on lua errors and report the issue to Elv http://www.tukui.org/forums/forum.php?id=146"] = true;
+	
+	L['Panel Width'] = true;
+	L['Panel Height'] = true;
+	L['PANEL_DESC'] = 'Adjust the size of your left and right panels, this will effect your chat and bags.';
+	L['URL Links'] = true;
+	L['Attempt to create URL links inside the chat.'] = true;
+	L['Short Channels'] = true;
+	L['Shorten the channel names in chat.'] = true;
+	L["Are you sure you want to reset every mover back to it's default position?"] = true;
+	
+	L['Panel Backdrop'] = true;
+	L['Toggle showing of the left and right chat panels.'] = true;
+	L['Hide Both'] = true;
+	L['Show Both'] = true;
+	L['Left Only'] = true;
+	L['Right Only'] = true;
 end
 
 --Media	
@@ -276,6 +290,9 @@ do
 	L['Days'] = true;
 		L['Color when the text is in the days format.'] = true;
 	L['Totem Bar'] = true;
+	
+	L['Action Mode'] = true;
+	L['Use the button when clicking or pressing the keybind on the keydown motion or on the keyup motion.'] = true;
 end
 
 --UNITFRAMES
@@ -475,7 +492,6 @@ do
 	L['Move UnitFrames'] = true;
 	L['Reset Positions'] = true;
 	L['Sticky Frames'] = true;
-	L['Attempt to snap frames to nearby frames.'] = true;
 	L['Raid625 Frames'] = true;
 	L['Raid2640 Frames'] = true;
 	L['Copy From'] = true;
@@ -548,6 +564,9 @@ do
 	L['AP'] = true;
 	L['SP'] = true;
 	L['HP'] = true;
+	L["DPS"] = true;
+	L["HPS"] = true;
+	L['Hit'] = true;
 end
 
 --Tooltip
@@ -573,8 +592,24 @@ end
 
 --Chat
 do
+	L['CHAT_DESC'] = 'Adjust chat settings for ElvUI.';
 	L["Chat"] = true;
 	L['Invalid Target'] = true;
+	L['BG'] = true;
+	L['BGL'] = true;
+	L['G'] = true;
+	L['O'] = true;
+	L['P'] = true;
+	L['PG'] = true;
+	L['PL'] = true;
+	L['R'] = true;
+	L['RL'] = true;
+	L['RW'] = true;
+	L['DND'] = true;
+	L['AFK'] = true;
+	L['whispers'] = true;
+	L['says'] = true;
+	L['yells'] = true;
 end
 
 --Skins
@@ -645,6 +680,20 @@ do
 	L["Can't Roll"] = true;
 	L['Disband Group'] = true;
 	L['Raid Menu'] = true;
+	L['Your items have been repaired for: '] = true;
+	L["You don't have enough money to repair."] = true;
+	L['Auto Repair'] = true;
+	L['Automatically repair using the following method when visiting a merchant.'] = true;
+	L['Your items have been repaired using guild bank funds for: '] = true;
+	L['Loot Roll'] = true;
+	L['Enable\Disable the loot roll frame.'] = true;
+	L['Loot'] = true;
+	L['Enable\Disable the loot frame.'] = true;
+	
+	L['Exp/Rep Position'] = true;
+	L['Change the position of the experience/reputation bar.'] = true;
+	L['Top Screen'] = true;
+	L["Below Minimap"] = true;
 end
 
 --Bags
@@ -652,10 +701,10 @@ do
 	L['Click to search..'] = true;
 	L['Sort Bags'] = true;
 	L['Stack Items'] = true;
-	L['Vender Grays'] = true;
+	L['Vendor Grays'] = true;
 	L['Toggle Bags'] = true;
-	L['You must be at a vender.'] = true;
-	L['Vendered gray items for:'] = true;
+	L['You must be at a vendor.'] = true;
+	L['Vendored gray items for:'] = true;
 	L['No gray items to sell.'] = true;
 	L['Hold Shift:'] = true;
 	L['Stack Special'] = true;
@@ -663,4 +712,5 @@ do
 	L['Purchase'] = true;
 	L["Can't buy anymore slots!"] = true;
 	L['You must purchase a bank slot first!'] = true;
+	L['Enable\Disable the all-in-one bag.'] = true;
 end
