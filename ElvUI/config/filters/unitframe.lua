@@ -220,9 +220,14 @@ DF['RaidDebuffs'] = {
 		--Trash
 		[SpellName(99532)] = true, -- Melt Armor	
 		
+	-- Dragon Soul
+		--Yor'Sahj the Unsleeping
+		[SpellName(109389)] = true, -- Deep Corruption Stacks
+		
 	--Baradin Hold
 		--Occu'thar
 		[SpellName(96913)] = true, -- Searing Shadows
+		
 	},
 }
 
