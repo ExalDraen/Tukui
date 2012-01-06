@@ -28,8 +28,9 @@ DF["core"] = {
 	["valuecolor"] = {r = 23/255,g = 132/255,b = 209/255},
 	
 	--panels
-	['panelWidth'] = 420,
+	['panelWidth'] = 412,
 	['panelHeight'] = 180,
+	['panelBackdropName'] = '',
 	['panelBackdrop'] = 'SHOWBOTH',
 	['expRepPos'] = 'TOP_SCREEN',
 	
@@ -37,6 +38,7 @@ DF["core"] = {
 	['bags'] = true,
 	['loot'] = true,
 	['lootRoll'] = true,
+	['mapTransparency'] = 0.5,
 };
 
 --NamePlate
@@ -271,6 +273,7 @@ DF['unitframe'] = {
 				['height'] = 53,
 				['lowmana'] = 30,
 				['combatfade'] = false,
+				['healPrediction'] = true,
 				['health'] = {
 					['text'] = true,
 					['text_format'] = 'current-percent',
@@ -351,6 +354,7 @@ DF['unitframe'] = {
 				['enable'] = true,
 				['width'] = 260,
 				['height'] = 53,
+				['healPrediction'] = true,
 				['health'] = {
 					['text'] = true,
 					['text_format'] = 'current-percent',
@@ -477,6 +481,7 @@ DF['unitframe'] = {
 				['enable'] = true,
 				['width'] = 190,
 				['height'] = 35,
+				['healPrediction'] = true,
 				['health'] = {
 					['text'] = false,
 					['text_format'] = 'current-percent',
@@ -592,6 +597,7 @@ DF['unitframe'] = {
 				['enable'] = true,
 				['width'] = 130,
 				['height'] = 35,
+				['healPrediction'] = true,
 				['health'] = {
 					['text'] = false,
 					['text_format'] = 'current-percent',
@@ -837,6 +843,7 @@ DF['unitframe'] = {
 				["showRaid"] = true,
 				["showSolo"] = false,
 				["showPlayer"] = true,
+				['healPrediction'] = false,
 				['columnAnchorPoint'] = "TOP",
 				['width'] = 180,
 				['height'] = 43,
@@ -913,6 +920,7 @@ DF['unitframe'] = {
 				["showRaid"] = true,
 				["showSolo"] = false,
 				["showPlayer"] = true,
+				['healPrediction'] = false,
 				['columnAnchorPoint'] = "TOP",
 				['width'] = 80,
 				['height'] = 44,
@@ -994,6 +1002,7 @@ DF['unitframe'] = {
 				["showRaid"] = true,
 				["showSolo"] = false,
 				["showPlayer"] = true,
+				['healPrediction'] = false,
 				['columnAnchorPoint'] = "TOP",
 				['width'] = 80,
 				['height'] = 36,
@@ -1051,7 +1060,17 @@ DF['unitframe'] = {
 					['fontsize'] = 8,
 					['colorIcons'] = true,
 				},			
-			},			
+			},	
+			['tank'] = {
+				['enable'] = true,
+				['width'] = 120,
+				['height'] = 28,
+			},	
+			['assist'] = {
+				['enable'] = true,
+				['width'] = 120,
+				['height'] = 28,
+			},					
 		},
 		['Secondary'] = {
 			['player'] = {
@@ -1060,6 +1079,7 @@ DF['unitframe'] = {
 				['height'] = 53,
 				['lowmana'] = 30,
 				['combatfade'] = false,
+				['healPrediction'] = true,
 				['health'] = {
 					['text'] = true,
 					['text_format'] = 'current-percent',
@@ -1140,6 +1160,7 @@ DF['unitframe'] = {
 				['enable'] = true,
 				['width'] = 260,
 				['height'] = 53,
+				['healPrediction'] = true,
 				['health'] = {
 					['text'] = true,
 					['text_format'] = 'current-percent',
@@ -1266,6 +1287,7 @@ DF['unitframe'] = {
 				['enable'] = true,
 				['width'] = 190,
 				['height'] = 35,
+				['healPrediction'] = true,
 				['health'] = {
 					['text'] = false,
 					['text_format'] = 'current-percent',
@@ -1381,6 +1403,7 @@ DF['unitframe'] = {
 				['enable'] = true,
 				['width'] = 130,
 				['height'] = 35,
+				['healPrediction'] = true,
 				['health'] = {
 					['text'] = false,
 					['text_format'] = 'current-percent',
@@ -1626,6 +1649,7 @@ DF['unitframe'] = {
 				["showRaid"] = true,
 				["showSolo"] = false,
 				["showPlayer"] = true,
+				['healPrediction'] = true,
 				["columnAnchorPoint"] = "LEFT",
 				["width"] = 80,
 				["height"] = 52,
@@ -1702,6 +1726,7 @@ DF['unitframe'] = {
 				["showRaid"] = true,
 				["showSolo"] = false,
 				["showPlayer"] = true,
+				['healPrediction'] = true,
 				['columnAnchorPoint'] = "TOP",
 				['width'] = 80,
 				['height'] = 44,
@@ -1783,6 +1808,7 @@ DF['unitframe'] = {
 				["showRaid"] = true,
 				["showSolo"] = false,
 				["showPlayer"] = true,
+				['healPrediction'] = true,
 				['columnAnchorPoint'] = "TOP",
 				['width'] = 80,
 				['height'] = 36,
@@ -1841,6 +1867,16 @@ DF['unitframe'] = {
 					['colorIcons'] = true,
 				},			
 			},
+			['tank'] = {
+				['enable'] = true,
+				['width'] = 120,
+				['height'] = 28,
+			},	
+			['assist'] = {
+				['enable'] = true,
+				['width'] = 120,
+				['height'] = 28,
+			},					
 			["positions"] = {
 				["ElvUF_Player"] = "BOTTOMLEFTUIParent464242",
 				["ElvUF_Target"] = "BOTTOMRIGHTUIParent-464242",
