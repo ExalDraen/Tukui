@@ -111,6 +111,8 @@ do
 	L['Panel Texture'] = true;
 	L['Specify a filename located inside the Interface\\AddOns\\ElvUI\\media\\textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.'] = true;
 	L["Are you sure you want to disband the group?"] = true;
+	
+	L["Your version of ElvUI is out of date. You can download the latest version from www.curse.com"] = true;
 end
 
 --Media	
@@ -195,6 +197,9 @@ do
 	L["Auras"] = true;
 	L['Healer Icon'] = true;
 	L['Display a healer icon over known healers inside battlegrounds.'] = true;
+	L['Restoration'] = true;
+	L['Holy'] = true;
+	L['Discipline'] = true;
 end
 
 --ClassTimers
@@ -528,6 +533,9 @@ do
 	L['Show a incomming heal prediction bar on the unitframe. Also display a slightly different colored bar for incoming overheals.'] = true;
 	L['Assist Frames'] = true;
 	L['Tank Frames'] = true;
+	
+	L['Display Pets'] = true;
+	L['Display group members pets above the unitframe.'] = true;
 end
 
 --Datatext
