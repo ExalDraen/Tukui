@@ -366,7 +366,11 @@ function UF:PostUpdateAura(unit, button, index, offset, filter, isDebuff, durati
 	if button.isDebuff then
 		if(not UnitIsFriend("player", unit) and button.owner ~= "player" and button.owner ~= "vehicle") --[[and (not E.isDebuffWhiteList[name])]] then
 			button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
-			button.icon:SetDesaturated(true)
+			if unit and not unit:find('arena%d') then
+				button.icon:SetDesaturated(true)
+			else
+				button.icon:SetDesaturated(false)
+			end
 		else
 			local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
 			if (name == "Unstable Affliction" or name == "Vampiric Touch") and E.myclass ~= "WARLOCK" then
@@ -441,7 +445,14 @@ function UF:CustomTimeText(duration)
 end
 
 local ticks = {}
+function UF:HideTicks()
+	for _, tick in pairs(ticks) do
+		tick:Hide()
+	end		
+end
+
 function UF:SetCastTicks(frame, numTicks)
+	UF:HideTicks()
 	if numTicks and numTicks > 0 then
 		local d = frame:GetWidth() / numTicks
 		for i = 1, numTicks do
@@ -456,10 +467,6 @@ function UF:SetCastTicks(frame, numTicks)
 			ticks[i]:SetPoint("CENTER", frame, "LEFT", d * i, 0)
 			ticks[i]:Show()
 		end
-	else
-		for _, tick in pairs(ticks) do
-			tick:Hide()
-		end
 	end
 end
 
@@ -470,34 +477,34 @@ function UF:PostCastStart(unit, name, rank, castid)
 	local db = self:GetParent().db
 	local color		
 	self.unit = unit
-
-	if UF.db.castBarTicks and unit == "player" then
+	
+	if db.castbar.ticks and unit == "player" then
 		local baseTicks = UF.db.ChannelTicks[name]
 		if baseTicks and UF.db.HastedChannelTicks[name] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste("player") * 0.01
 			local firstTickInc = tickIncRate / 2
 			local bonusTicks = 0
-			if curHaste > firstTickInc then
+			if curHaste >= firstTickInc then
 				bonusTicks = bonusTicks + 1
 			end
 			
-			local x = (firstTickInc + tickIncRate)
+			local x = tonumber(E:Round(firstTickInc + tickIncRate, 2))
 			while curHaste >= x do
-				x = (firstTickInc + (tickIncRate * bonusTicks))
-				bonusTicks = bonusTicks + 1
-
-				if curHaste > x then break; end
+				x = tonumber(E:Round(firstTickInc + (tickIncRate * bonusTicks), 2))
+				if curHaste >= x then
+					bonusTicks = bonusTicks + 1
+				end
 			end
 
 			UF:SetCastTicks(self, baseTicks + bonusTicks)
 		elseif baseTicks then
 			UF:SetCastTicks(self, baseTicks)
 		else
-			for _, tick in pairs(ticks) do
-				tick:Hide()
-			end		
+			UF:HideTicks()
 		end
+	else
+		UF:HideTicks()			
 	end	
 	
 	if self.interrupt and unit ~= "player" then
